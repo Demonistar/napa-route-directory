@@ -1,4 +1,4 @@
-const DATA_URL = "data.json";
+const DATA_URL = "https://www.dropbox.com/scl/fi/mv0rtc55jzghuwlviuxsz/locations-live.json?rlkey=snafrhykqh7tz1rlh96vi8w0z&st=d0l7uizn&dl=1";
 
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
