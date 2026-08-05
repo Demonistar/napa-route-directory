@@ -46,7 +46,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // QR images: cache-first, but stash a copy the first time each is seen
+  // QR images: cache-first, but stash a copy the first time each is seen.
+  // These never change once generated, so no need to ever re-check the network.
   if (url.pathname.includes("/qr/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
@@ -60,8 +61,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // app shell: cache-first
+  // App shell (index.html, app.js, style.css, manifest, icons): network-first.
+  // Always fetch the freshest copy when online, so a real code change reaches
+  // everyone on their very next visit with no manual cache-version bump ever
+  // required. Falls back to the last cached copy only when actually offline,
+  // which is what keeps this working without a connection.
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    fetch(event.request)
+      .then((res) => {
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, res.clone()));
+        return res;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
