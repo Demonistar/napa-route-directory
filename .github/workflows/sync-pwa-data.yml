@@ -3,7 +3,7 @@ name: Sync PWA data from Dropbox
 on:
   schedule:
     # Every 10 minutes. Tighten to weekends-only later via cron once proven out.
-    - cron: '*/10 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch: {}
 
 permissions:
