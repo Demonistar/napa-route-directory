@@ -32,6 +32,14 @@
   <div class="search-wrap">
     <input id="searchInput" type="text" inputmode="search" autocomplete="off"
       placeholder="Search by store name, street, or city&hellip;" aria-label="Search stops">
+    <div class="sort-row">
+      <label for="sortSelect" class="sort-label">Sort by</label>
+      <select id="sortSelect" aria-label="Sort stops">
+        <option value="name">Site Name (A&ndash;Z)</option>
+        <option value="account">Account Number</option>
+        <option value="city">City (A&ndash;Z)</option>
+      </select>
+    </div>
   </div>
 
   <p id="statusLine" class="status-line" role="status"></p>
