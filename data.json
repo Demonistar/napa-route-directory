@@ -1,0 +1,49 @@
+{
+  "updated": "2026-07-29",
+  "locations": [
+    {
+      "id": "loc-0001",
+      "name": "Sample Auto Repair",
+      "address": "123 Main St",
+      "city": "Bentonville",
+      "state": "AR",
+      "zip": "72712",
+      "notes": "Delivery entrance around back, gate code 4521",
+      "videoUrl": "https://example.com/video/loc-0001",
+      "qrImage": "qr/loc-0001.png"
+    },
+    {
+      "id": "loc-0002",
+      "name": "Rogers Quick Fix Garage",
+      "address": "845 S 8th St",
+      "city": "Rogers",
+      "state": "AR",
+      "zip": "72756",
+      "notes": "Leave with front desk, no dock",
+      "videoUrl": "https://example.com/video/loc-0002",
+      "qrImage": "qr/loc-0002.png"
+    },
+    {
+      "id": "loc-0003",
+      "name": "Bella Vista Collision Center",
+      "address": "212 Forest Hills Blvd",
+      "city": "Bella Vista",
+      "state": "AR",
+      "zip": "72714",
+      "notes": "Ring bell at service door, dog on site (friendly)",
+      "videoUrl": "https://example.com/video/loc-0003",
+      "qrImage": "qr/loc-0003.png"
+    },
+    {
+      "id": "loc-0004",
+      "name": "Springdale Fleet Services",
+      "address": "1490 E Robinson Ave",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "72764",
+      "notes": "Loading dock, use side entrance after 4pm",
+      "videoUrl": "https://example.com/video/loc-0004",
+      "qrImage": "qr/loc-0004.png"
+    }
+  ]
+}

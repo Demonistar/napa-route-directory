@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2545">
+<title>Route Directory</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Route Dir">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">&#9679;</span>
+      <div class="brand-text">
+        <h1>Route Directory</h1>
+        <p id="stopCount" class="brand-sub">loading stops&hellip;</p>
+      </div>
+    </div>
+    <button id="refreshBtn" class="refresh-btn" aria-label="Refresh data">&#8635;</button>
+  </div>
+</header>
+
+<main>
+  <div class="search-wrap">
+    <input id="searchInput" type="text" inputmode="search" autocomplete="off"
+      placeholder="Search by store name, street, or city&hellip;" aria-label="Search stops">
+  </div>
+
+  <p id="statusLine" class="status-line" role="status"></p>
+
+  <ul id="results" class="ticket-list"></ul>
+
+  <div id="emptyState" class="empty-state" hidden>
+    <p class="empty-title">No match on the board.</p>
+    <p class="empty-sub">Try the street name or just the city.</p>
+  </div>
+</main>
+
+<footer class="foot">
+  <span id="updatedLine">&nbsp;</span>
+  <span id="offlineTag" class="offline-tag" hidden>OFFLINE COPY</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
