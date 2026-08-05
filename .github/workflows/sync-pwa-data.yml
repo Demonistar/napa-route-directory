@@ -1,0 +1,39 @@
+name: Sync PWA data from Dropbox
+
+on:
+  schedule:
+    # Every 10 minutes. Tighten to weekends-only later via cron once proven out.
+    - cron: '*/10 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Pull latest location data from Dropbox
+        env:
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+        run: python3 sync_pwa_data.py
+
+      - name: Commit and push if data actually changed
+        run: |
+          git config user.name "napa-pwa-sync-bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet data.json; then
+            echo "No changes — Dropbox data matches what's already published."
+          else
+            git add data.json
+            git commit -m "Auto-sync location data from Dropbox"
+            git push
+          fi
