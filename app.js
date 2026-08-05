@@ -71,27 +71,47 @@ function filterLocations(query) {
   });
 }
 
+function compareText(a, b) {
+  return String(a || "").localeCompare(String(b || ""));
+}
+
+function compareAccountNumber(a, b) {
+  const aNum = parseInt(a, 10);
+  const bNum = parseInt(b, 10);
+  const aValid = !isNaN(aNum);
+  const bValid = !isNaN(bNum);
+  if (aValid && bValid) return aNum - bNum;
+  if (aValid) return -1;
+  if (bValid) return 1;
+  return compareText(a, b);
+}
+
 function sortLocations(list, sortBy) {
   const sorted = list.slice();
   switch (sortBy) {
     case "account":
-      sorted.sort((a, b) => {
-        const aNum = parseInt(a.accountNumber, 10);
-        const bNum = parseInt(b.accountNumber, 10);
-        const aValid = !isNaN(aNum);
-        const bValid = !isNaN(bNum);
-        if (aValid && bValid) return aNum - bNum;
-        if (aValid) return -1;
-        if (bValid) return 1;
-        return String(a.accountNumber || "").localeCompare(String(b.accountNumber || ""));
-      });
+      sorted.sort((a, b) => compareAccountNumber(a.accountNumber, b.accountNumber));
       break;
     case "city":
-      sorted.sort((a, b) => String(a.city || "").localeCompare(String(b.city || "")) || String(a.name || "").localeCompare(String(b.name || "")));
+      sorted.sort((a, b) => compareText(a.city, b.city) || compareText(a.name, b.name));
+      break;
+    case "state_city_name":
+      sorted.sort((a, b) =>
+        compareText(a.state, b.state) ||
+        compareText(a.city, b.city) ||
+        compareText(a.name, b.name)
+      );
+      break;
+    case "state_city_account":
+      sorted.sort((a, b) =>
+        compareText(a.state, b.state) ||
+        compareText(a.city, b.city) ||
+        compareAccountNumber(a.accountNumber, b.accountNumber)
+      );
       break;
     case "name":
     default:
-      sorted.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+      sorted.sort((a, b) => compareText(a.name, b.name));
       break;
   }
   return sorted;
