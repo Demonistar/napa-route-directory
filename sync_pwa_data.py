@@ -52,6 +52,7 @@ def to_pwa_shape(dropbox_data: dict) -> dict:
         locations.append({
             "id": loc.get("id", ""),
             "name": loc.get("siteName", ""),
+            "accountNumber": loc.get("accountNumber", ""),
             "address": loc.get("address", ""),
             "city": loc.get("city", ""),
             "state": loc.get("state", ""),
