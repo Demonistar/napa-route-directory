@@ -2,6 +2,7 @@ const DATA_URL = "data.json";
 
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
 const statusLine = document.getElementById("statusLine");
 const stopCount = document.getElementById("stopCount");
 const emptyState = document.getElementById("emptyState");
@@ -34,6 +35,7 @@ function render(list) {
           <p class="ticket-addr">${escapeHtml(loc.address)}, ${escapeHtml(loc.city)}, ${escapeHtml(loc.state)}</p>
         </div>
         <div class="ticket-head-side">
+          ${loc.accountNumber ? `<span class="ticket-account">#${escapeHtml(loc.accountNumber)}</span>` : ""}
           <span class="ticket-zip">${escapeHtml(loc.zip || "")}</span>
           ${loc.qrImage ? `
             <a class="ticket-qr" href="${escapeAttr(loc.qrImage)}" target="_blank" rel="noopener" aria-label="Open full-size QR code">
@@ -63,15 +65,42 @@ function filterLocations(query) {
   const q = query.trim().toLowerCase();
   if (!q) return allLocations;
   return allLocations.filter(loc => {
-    const haystack = [loc.name, loc.address, loc.city, loc.state, loc.zip]
+    const haystack = [loc.name, loc.address, loc.city, loc.state, loc.zip, loc.accountNumber]
       .filter(Boolean).join(" ").toLowerCase();
     return haystack.includes(q);
   });
 }
 
+function sortLocations(list, sortBy) {
+  const sorted = list.slice();
+  switch (sortBy) {
+    case "account":
+      sorted.sort((a, b) => {
+        const aNum = parseInt(a.accountNumber, 10);
+        const bNum = parseInt(b.accountNumber, 10);
+        const aValid = !isNaN(aNum);
+        const bValid = !isNaN(bNum);
+        if (aValid && bValid) return aNum - bNum;
+        if (aValid) return -1;
+        if (bValid) return 1;
+        return String(a.accountNumber || "").localeCompare(String(b.accountNumber || ""));
+      });
+      break;
+    case "city":
+      sorted.sort((a, b) => String(a.city || "").localeCompare(String(b.city || "")) || String(a.name || "").localeCompare(String(b.name || "")));
+      break;
+    case "name":
+    default:
+      sorted.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+      break;
+  }
+  return sorted;
+}
+
 function applySearch() {
   const filtered = filterLocations(searchInput.value);
-  render(filtered);
+  const sorted = sortLocations(filtered, sortSelect.value);
+  render(sorted);
   statusLine.textContent = filtered.length === allLocations.length
     ? `Showing all ${allLocations.length} stops`
     : `${filtered.length} of ${allLocations.length} stops match`;
@@ -95,6 +124,7 @@ async function loadData({ forceNetwork = false } = {}) {
 }
 
 searchInput.addEventListener("input", applySearch);
+sortSelect.addEventListener("change", applySearch);
 refreshBtn.addEventListener("click", () => loadData({ forceNetwork: true }));
 
 function updateOfflineTag() {
