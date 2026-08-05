@@ -54,6 +54,16 @@
   </div>
 </main>
 
+<div id="videoModal" class="video-modal" hidden>
+  <div class="video-modal-inner">
+    <div class="video-modal-head">
+      <span id="videoModalTitle" class="video-modal-title"></span>
+      <button id="videoModalClose" type="button" class="video-modal-close" aria-label="Close video">&#10005;</button>
+    </div>
+    <video id="videoPlayer" class="video-modal-player" controls playsinline webkit-playsinline></video>
+  </div>
+</div>
+
 <footer class="foot">
   <span id="updatedLine">&nbsp;</span>
   <span id="offlineTag" class="offline-tag" hidden>OFFLINE COPY</span>

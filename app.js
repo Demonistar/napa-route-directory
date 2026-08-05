@@ -9,8 +9,47 @@ const emptyState = document.getElementById("emptyState");
 const updatedLine = document.getElementById("updatedLine");
 const offlineTag = document.getElementById("offlineTag");
 const refreshBtn = document.getElementById("refreshBtn");
+const videoModal = document.getElementById("videoModal");
+const videoPlayer = document.getElementById("videoPlayer");
+const videoModalTitle = document.getElementById("videoModalTitle");
+const videoModalClose = document.getElementById("videoModalClose");
 
 let allLocations = [];
+
+// Rewrites a Dropbox share link into a direct, embeddable stream URL so the
+// video plays inline in the page instead of handing off to the Dropbox app
+// or downloading the file.
+function getPlayableUrl(url) {
+  if (!url) return "";
+  if (!url.includes("dropbox.com")) return url;
+  if (/[?&]raw=1/.test(url)) return url;
+  if (/[?&]dl=[01]/.test(url)) return url.replace(/([?&])dl=[01]/, "$1raw=1");
+  return url + (url.includes("?") ? "&" : "?") + "raw=1";
+}
+
+function openVideo(loc) {
+  videoModalTitle.textContent = loc.name;
+  videoPlayer.src = getPlayableUrl(loc.videoUrl);
+  videoModal.hidden = false;
+  document.body.style.overflow = "hidden";
+  videoPlayer.play().catch(() => {});
+}
+
+function closeVideo() {
+  videoPlayer.pause();
+  videoPlayer.removeAttribute("src");
+  videoPlayer.load();
+  videoModal.hidden = true;
+  document.body.style.overflow = "";
+}
+
+videoModalClose.addEventListener("click", closeVideo);
+videoModal.addEventListener("click", e => {
+  if (e.target === videoModal) closeVideo();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !videoModal.hidden) closeVideo();
+});
 
 function render(list) {
   resultsEl.innerHTML = "";
@@ -26,29 +65,16 @@ function render(list) {
     const li = document.createElement("li");
     li.className = "ticket";
 
-    const mapQuery = encodeURIComponent(`${loc.address}, ${loc.city}, ${loc.state} ${loc.zip}`);
-
     li.innerHTML = `
-      <div class="ticket-head">
-        <div class="ticket-head-text">
-          <span class="ticket-name">${escapeHtml(loc.name)}</span>
-          <p class="ticket-addr">${escapeHtml(loc.address)}, ${escapeHtml(loc.city)}, ${escapeHtml(loc.state)}</p>
-        </div>
-        <div class="ticket-head-side">
-          ${loc.accountNumber ? `<span class="ticket-account">#${escapeHtml(loc.accountNumber)}</span>` : ""}
-          <span class="ticket-zip">${escapeHtml(loc.zip || "")}</span>
-          ${loc.qrImage ? `
-            <a class="ticket-qr" href="${escapeAttr(loc.qrImage)}" target="_blank" rel="noopener" aria-label="Open full-size QR code">
-              <img src="${escapeAttr(loc.qrImage)}" alt="QR code for ${escapeHtml(loc.name)}" width="56" height="56" loading="lazy">
-            </a>` : ""}
-        </div>
-      </div>
-      ${loc.notes ? `<div class="ticket-notes"><span class="ticket-notes-label">DROP NOTES</span>${escapeHtml(loc.notes)}</div>` : ""}
-      <div class="ticket-actions">
-        <a class="ticket-map" href="https://maps.google.com/?q=${mapQuery}" target="_blank" rel="noopener">Map</a>
-        ${loc.videoUrl ? `<a class="ticket-link" href="${escapeAttr(loc.videoUrl)}" target="_blank" rel="noopener">Watch clip</a>` : ""}
-      </div>
+      ${loc.accountNumber ? `<span class="ticket-account">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
+      <span class="ticket-name">${escapeHtml(loc.name)}</span>
+      ${loc.videoUrl ? `<button type="button" class="ticket-watch" data-id="${escapeAttr(loc.id)}">&#9654; Watch</button>` : ""}
     `;
+
+    if (loc.videoUrl) {
+      li.querySelector(".ticket-watch").addEventListener("click", () => openVideo(loc));
+    }
+
     frag.appendChild(li);
   });
   resultsEl.appendChild(frag);
