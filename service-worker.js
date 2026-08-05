@@ -1,4 +1,4 @@
-const CACHE_NAME = "route-directory-v1";
+const CACHE_NAME = "route-directory-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
