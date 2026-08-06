@@ -244,6 +244,10 @@ main{
   padding:16px;
 }
 
+.video-modal[hidden]{
+  display:none;
+}
+
 .video-modal-inner{
   width:100%;
   max-width:640px;

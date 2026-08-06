@@ -6,6 +6,8 @@ const sortSelect = document.getElementById("sortSelect");
 const statusLine = document.getElementById("statusLine");
 const stopCount = document.getElementById("stopCount");
 const emptyState = document.getElementById("emptyState");
+const emptyTitle = document.getElementById("emptyTitle");
+const emptySub = document.getElementById("emptySub");
 const updatedLine = document.getElementById("updatedLine");
 const offlineTag = document.getElementById("offlineTag");
 const refreshBtn = document.getElementById("refreshBtn");
@@ -55,6 +57,13 @@ function render(list) {
   resultsEl.innerHTML = "";
 
   if (list.length === 0) {
+    if (allLocations.length === 0) {
+      emptyTitle.textContent = "No current locations listed.";
+      emptySub.textContent = "The directory is being updated, check back soon.";
+    } else {
+      emptyTitle.textContent = "No match on the board.";
+      emptySub.textContent = "Try the street name or just the city.";
+    }
     emptyState.hidden = false;
     return;
   }
