@@ -15,6 +15,10 @@ const videoModal = document.getElementById("videoModal");
 const videoPlayer = document.getElementById("videoPlayer");
 const videoModalTitle = document.getElementById("videoModalTitle");
 const videoModalClose = document.getElementById("videoModalClose");
+const imageModal = document.getElementById("imageModal");
+const imageModalImg = document.getElementById("imageModalImg");
+const imageModalTitle = document.getElementById("imageModalTitle");
+const imageModalClose = document.getElementById("imageModalClose");
 
 let allLocations = [];
 
@@ -27,6 +31,19 @@ function getPlayableUrl(url) {
   if (/[?&]raw=1/.test(url)) return url;
   if (/[?&]dl=[01]/.test(url)) return url.replace(/([?&])dl=[01]/, "$1raw=1");
   return url + (url.includes("?") ? "&" : "?") + "raw=1";
+}
+
+// "/home/..." Dropbox paths are the private browser-view path, not a real
+// shareable link — they won't play for a driver who isn't logged into the
+// right Dropbox account. Treat those as absent rather than show a dead button.
+function isPlayableVideoUrl(url) {
+  return !!url && !url.includes("/home/");
+}
+
+function getMapUrl(loc) {
+  const parts = [loc.address, loc.city, loc.state].filter(Boolean);
+  if (parts.length === 0) return "";
+  return "https://maps.google.com/?q=" + encodeURIComponent(parts.join(", "));
 }
 
 function openVideo(loc) {
@@ -49,8 +66,31 @@ videoModalClose.addEventListener("click", closeVideo);
 videoModal.addEventListener("click", e => {
   if (e.target === videoModal) closeVideo();
 });
+
+function openImage(loc) {
+  imageModalTitle.textContent = loc.name;
+  imageModalImg.src = loc.imageUrl;
+  imageModalImg.alt = "Site photo for " + loc.name;
+  imageModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeImage() {
+  imageModal.hidden = true;
+  imageModalImg.removeAttribute("src");
+  document.body.style.overflow = "";
+}
+
+imageModalClose.addEventListener("click", closeImage);
+imageModal.addEventListener("click", e => {
+  if (e.target === imageModal) closeImage();
+});
+
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape" && !videoModal.hidden) closeVideo();
+  if (e.key === "Escape") {
+    if (!videoModal.hidden) closeVideo();
+    if (!imageModal.hidden) closeImage();
+  }
 });
 
 function render(list) {
@@ -74,14 +114,25 @@ function render(list) {
     const li = document.createElement("li");
     li.className = "ticket";
 
+    const mapUrl = getMapUrl(loc);
+    const hasImage = !!loc.imageUrl;
+    const hasVideo = isPlayableVideoUrl(loc.videoUrl);
+
     li.innerHTML = `
       ${loc.accountNumber ? `<span class="ticket-account">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
       <span class="ticket-name">${escapeHtml(loc.name)}</span>
-      ${loc.videoUrl ? `<button type="button" class="ticket-watch" data-id="${escapeAttr(loc.id)}">&#9654; Watch</button>` : ""}
+      <span class="ticket-btns">
+        ${mapUrl ? `<a class="ticket-btn ticket-btn-map" href="${escapeAttr(mapUrl)}" target="_blank" rel="noopener" aria-label="Open map for ${escapeHtml(loc.name)}">Map</a>` : ""}
+        ${hasImage ? `<button type="button" class="ticket-btn ticket-btn-img" aria-label="View site photo for ${escapeHtml(loc.name)}">Photo</button>` : ""}
+        ${hasVideo ? `<button type="button" class="ticket-btn ticket-btn-watch" aria-label="Watch video for ${escapeHtml(loc.name)}">&#9654; Watch</button>` : ""}
+      </span>
     `;
 
-    if (loc.videoUrl) {
-      li.querySelector(".ticket-watch").addEventListener("click", () => openVideo(loc));
+    if (hasImage) {
+      li.querySelector(".ticket-btn-img").addEventListener("click", () => openImage(loc));
+    }
+    if (hasVideo) {
+      li.querySelector(".ticket-btn-watch").addEventListener("click", () => openVideo(loc));
     }
 
     frag.appendChild(li);

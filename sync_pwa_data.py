@@ -59,6 +59,7 @@ def to_pwa_shape(dropbox_data: dict) -> dict:
             "zip": "",
             "notes": loc.get("instructions", ""),
             "videoUrl": loc.get("videoUrl", ""),
+            "imageUrl": loc.get("imageUrl", ""),
         })
     return {
         "updated": dropbox_data.get("publishedAt", "")[:10],
