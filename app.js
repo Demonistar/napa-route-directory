@@ -22,6 +22,33 @@ const imageModalClose = document.getElementById("imageModalClose");
 
 let allLocations = [];
 
+// ── Favorites (long-press to toggle) ────────────────────────────────────────
+const FAVORITES_KEY = "napa-route-directory-favorites";
+
+function loadFavorites() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+function saveFavorites(set) {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...set]));
+  } catch {
+    // localStorage unavailable (private browsing, storage full) — favorites
+    // just won't persist across reloads this session, non-fatal.
+  }
+}
+let favorites = loadFavorites();
+
+function toggleFavorite(id) {
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  saveFavorites(favorites);
+  applySearch();
+}
+
 // Rewrites a Dropbox share link into a direct, embeddable stream URL so the
 // video plays inline in the page instead of handing off to the Dropbox app
 // or downloading the file.
@@ -112,28 +139,73 @@ function render(list) {
   const frag = document.createDocumentFragment();
   list.forEach(loc => {
     const li = document.createElement("li");
-    li.className = "ticket";
 
     const mapUrl = getMapUrl(loc);
     const hasImage = !!loc.imageUrl;
     const hasVideo = isPlayableVideoUrl(loc.videoUrl);
 
+    const isFavorite = favorites.has(loc.id);
+    li.className = "ticket" + (hasImage ? " ticket--has-image" : "") + (isFavorite ? " ticket--favorite" : "");
+
     li.innerHTML = `
-      ${loc.accountNumber ? `<span class="ticket-account">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
-      <span class="ticket-name">${escapeHtml(loc.name)}</span>
+      ${loc.accountNumber ? `<span class="ticket-account${hasImage ? " ticket-account--has-image" : ""}">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
+      <span class="ticket-name">${isFavorite ? `<span class="ticket-fav-star" aria-label="Favorited">&#9733;</span>` : ""}${escapeHtml(loc.name)}</span>
       <span class="ticket-btns">
         ${mapUrl ? `<a class="ticket-btn ticket-btn-map" href="${escapeAttr(mapUrl)}" target="_blank" rel="noopener" aria-label="Open map for ${escapeHtml(loc.name)}">Map</a>` : ""}
-        ${hasImage ? `<button type="button" class="ticket-btn ticket-btn-img" aria-label="View site photo for ${escapeHtml(loc.name)}">Photo</button>` : ""}
         ${hasVideo ? `<button type="button" class="ticket-btn ticket-btn-watch" aria-label="Watch video for ${escapeHtml(loc.name)}">&#9654; Watch</button>` : ""}
       </span>
     `;
 
+    // Tapping the card itself (not the Map/Watch buttons) opens the site
+    // photo, if there is one. The account-number badge gets a green ring
+    // (via .ticket-account--has-image in CSS) as the visual cue that a
+    // photo is available — replaces the old standalone Photo button.
     if (hasImage) {
-      li.querySelector(".ticket-btn-img").addEventListener("click", () => openImage(loc));
+      li.addEventListener("click", e => {
+        if (longPressFired) { longPressFired = false; return; }
+        if (e.target.closest("a, button")) return;
+        openImage(loc);
+      });
     }
     if (hasVideo) {
       li.querySelector(".ticket-btn-watch").addEventListener("click", () => openVideo(loc));
     }
+
+    // ── Long-press to favorite / unfavorite ─────────────────────────────
+    // Hold ~550ms without moving to toggle. Suppresses the trailing click
+    // (longPressFired) so a favorite-toggle never also opens the photo.
+    const LONG_PRESS_MS = 550;
+    const MOVE_CANCEL_PX = 10;
+    let pressTimer = null;
+    let longPressFired = false;
+    let startX = 0;
+    let startY = 0;
+
+    const cancelPress = () => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    };
+
+    li.addEventListener("pointerdown", e => {
+      if (e.target.closest("a, button")) return;
+      longPressFired = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      pressTimer = setTimeout(() => {
+        longPressFired = true;
+        toggleFavorite(loc.id);
+      }, LONG_PRESS_MS);
+    });
+    li.addEventListener("pointermove", e => {
+      if (Math.abs(e.clientX - startX) > MOVE_CANCEL_PX || Math.abs(e.clientY - startY) > MOVE_CANCEL_PX) {
+        cancelPress();
+      }
+    });
+    li.addEventListener("pointerup", cancelPress);
+    li.addEventListener("pointercancel", cancelPress);
+    li.addEventListener("pointerleave", cancelPress);
 
     frag.appendChild(li);
   });
@@ -203,9 +275,19 @@ function sortLocations(list, sortBy) {
   return sorted;
 }
 
+// Floats favorited stops to the top, preserving the relative order the
+// current sort (name/account/city/etc.) already produced within each group.
+// Relies on Array.prototype.sort's stability, which is spec-guaranteed
+// (ES2019+) in every browser this PWA targets.
+function applyFavoritesFirst(list) {
+  const sorted = list.slice();
+  sorted.sort((a, b) => (favorites.has(b.id) ? 1 : 0) - (favorites.has(a.id) ? 1 : 0));
+  return sorted;
+}
+
 function applySearch() {
   const filtered = filterLocations(searchInput.value);
-  const sorted = sortLocations(filtered, sortSelect.value);
+  const sorted = applyFavoritesFirst(sortLocations(filtered, sortSelect.value));
   render(sorted);
   statusLine.textContent = filtered.length === allLocations.length
     ? `Showing all ${allLocations.length} stops`

@@ -204,6 +204,30 @@ main{
   padding:3px 0;
 }
 
+/* Green ring on the account badge signals a site photo is available;
+   tapping anywhere on the card (outside Map/Watch) opens it — see
+   ticket--has-image / click handler in app.js. */
+.ticket-account--has-image{
+  border:2px solid #22c55e;
+  background:#f0fdf4;
+  color:#15803d;
+}
+
+.ticket--has-image{
+  cursor:pointer;
+}
+
+/* Long-press (see app.js) toggles favorite status — amber left border and
+   a star next to the name mark a favorited stop. */
+.ticket--favorite{
+  border-left-color:var(--yellow);
+}
+
+.ticket-fav-star{
+  color:var(--yellow);
+  margin-right:4px;
+}
+
 .ticket-name{
   font-weight:800;
   font-size:15px;
@@ -239,9 +263,13 @@ main{
   transform:scale(0.96);
 }
 
+/* MAP BUTTON — hidden per Craig's request (8/17/2026). The button, its
+   getMapUrl() logic in app.js, and this CSS rule are all left intact —
+   delete just this rule to bring it back. */
 .ticket-btn-map{
   background:var(--navy);
   color:#fff;
+  display:none;
 }
 
 .ticket-btn-img{
