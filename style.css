@@ -342,6 +342,39 @@ main{
   background:#000;
 }
 
+/* Photo grid (multi-image sites) and zoomed single-photo view — both live
+   inside the same modal shell as the video player above. */
+.image-modal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));
+  gap:2px;
+  padding:2px;
+  max-height:70vh;
+  overflow-y:auto;
+  background:#000;
+}
+
+.image-modal-thumb{
+  display:block;
+  padding:0;
+  border:none;
+  background:none;
+  aspect-ratio:1;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.image-modal-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+#imageModalImg{
+  cursor:zoom-out;
+}
+
 /* ---------- Empty state ---------- */
 .empty-state{
   text-align:center;

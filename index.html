@@ -70,7 +70,11 @@
       <span id="imageModalTitle" class="video-modal-title"></span>
       <button id="imageModalClose" type="button" class="video-modal-close" aria-label="Close photo">&#10005;</button>
     </div>
-    <img id="imageModalImg" class="video-modal-player" alt="">
+    <!-- Grid view: one thumbnail per photo. Tapping a thumbnail zooms it to
+         fill the modal (zoomed view below); tapping the zoomed image goes
+         back to this grid. Single-photo sites just show one thumbnail. -->
+    <div id="imageModalGrid" class="image-modal-grid"></div>
+    <img id="imageModalImg" class="video-modal-player" alt="" hidden>
   </div>
 </div>
 

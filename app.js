@@ -16,6 +16,7 @@ const videoPlayer = document.getElementById("videoPlayer");
 const videoModalTitle = document.getElementById("videoModalTitle");
 const videoModalClose = document.getElementById("videoModalClose");
 const imageModal = document.getElementById("imageModal");
+const imageModalGrid = document.getElementById("imageModalGrid");
 const imageModalImg = document.getElementById("imageModalImg");
 const imageModalTitle = document.getElementById("imageModalTitle");
 const imageModalClose = document.getElementById("imageModalClose");
@@ -94,17 +95,68 @@ videoModal.addEventListener("click", e => {
   if (e.target === videoModal) closeVideo();
 });
 
-function openImage(loc) {
-  imageModalTitle.textContent = loc.name;
-  imageModalImg.src = loc.imageUrl;
+// Combines the legacy single loc.imageUrl with the newer loc.imageUrls array
+// (Generate-Links-discovered photos) into one ordered, de-duplicated list.
+function collectImages(loc) {
+  const urls = [];
+  if (loc.imageUrl) urls.push(loc.imageUrl);
+  if (Array.isArray(loc.imageUrls)) {
+    for (const u of loc.imageUrls) {
+      if (u && !urls.includes(u)) urls.push(u);
+    }
+  }
+  return urls;
+}
+
+function showImageGrid(loc, images) {
+  imageModalGrid.innerHTML = "";
+  imageModalGrid.hidden = false;
+  imageModalImg.hidden = true;
+  imageModalImg.removeAttribute("src");
+
+  images.forEach((url, i) => {
+    const thumb = document.createElement("button");
+    thumb.type = "button";
+    thumb.className = "image-modal-thumb";
+    thumb.setAttribute("aria-label", `View photo ${i + 1} of ${images.length} for ${loc.name}`);
+    thumb.innerHTML = `<img src="${escapeAttr(url)}" alt="Site photo ${i + 1} for ${escapeHtml(loc.name)}">`;
+    thumb.addEventListener("click", () => zoomImage(loc, images, i));
+    imageModalGrid.appendChild(thumb);
+  });
+}
+
+function zoomImage(loc, images, index) {
+  imageModalGrid.hidden = true;
+  imageModalImg.src = images[index];
   imageModalImg.alt = "Site photo for " + loc.name;
+  imageModalImg.hidden = false;
+  // Tapping the zoomed photo goes back to the grid. Single-photo sites have
+  // nothing to go "back" to, so just close the modal instead.
+  imageModalImg.onclick = () => {
+    if (images.length > 1) showImageGrid(loc, images);
+    else closeImage();
+  };
+}
+
+function openImage(loc) {
+  const images = collectImages(loc);
+  if (images.length === 0) return;
+  imageModalTitle.textContent = loc.name;
   imageModal.hidden = false;
   document.body.style.overflow = "hidden";
+  // Single photo: skip straight to the zoomed view — no point showing a
+  // one-tile grid first. Multiple photos: show the grid to pick from.
+  if (images.length === 1) zoomImage(loc, images, 0);
+  else showImageGrid(loc, images);
 }
 
 function closeImage() {
   imageModal.hidden = true;
+  imageModalGrid.hidden = true;
+  imageModalGrid.innerHTML = "";
+  imageModalImg.hidden = true;
   imageModalImg.removeAttribute("src");
+  imageModalImg.onclick = null;
   document.body.style.overflow = "";
 }
 
@@ -141,7 +193,7 @@ function render(list) {
     const li = document.createElement("li");
 
     const mapUrl = getMapUrl(loc);
-    const hasImage = !!loc.imageUrl;
+    const hasImage = !!loc.imageUrl || (Array.isArray(loc.imageUrls) && loc.imageUrls.length > 0);
     const hasVideo = isPlayableVideoUrl(loc.videoUrl);
 
     const isFavorite = favorites.has(loc.id);
