@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-17",
+  "updated": "2026-08-24",
   "locations": [
     {
       "id": "a3290faa-e86b-42cc-bef9-8ccfbe77e8a3",
@@ -294,7 +294,7 @@
       "name": "PLAZA TIRE SERVICE",
       "accountNumber": "3835",
       "address": "3835 W NEW HOPE RD",
-      "city": "ROGERS",
+      "city": "Rogers",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -515,6 +515,78 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/4nr0njlnyo32s1nbkvg3v/3163-SPRINGDALE-UNIVERSITY-AUTO-AND-TIRE.MOV?rlkey=2fss2q3hxpvi23wqyqhy2nol1&dl=0",
+      "imageUrl": null
+    },
+    {
+      "id": "20c648ae-dc2a-4ed4-bbb5-c33ddf0041e7",
+      "name": "Edwins Auto Repair",
+      "accountNumber": "318",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/318.MOV",
+      "imageUrl": null
+    },
+    {
+      "id": "bda78efa-d9fd-4c84-a9d7-3175ee62e28a",
+      "name": "Big O Tires",
+      "accountNumber": "1542",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/1542.MOV",
+      "imageUrl": null
+    },
+    {
+      "id": "4ccbcbc7-bdac-4a53-9369-e79243d19421",
+      "name": "G-Force",
+      "accountNumber": "3836",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/3836.MOV",
+      "imageUrl": null
+    },
+    {
+      "id": "ec622fa2-3d31-4485-9624-f9a2f6050b2e",
+      "name": "Garret Tire and Auto",
+      "accountNumber": "6550",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/6550.MOV",
+      "imageUrl": null
+    },
+    {
+      "id": "4515b70a-a735-4c1a-8ebb-1f9f38033e8c",
+      "name": "Plaza Tire",
+      "accountNumber": "8133",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/8133.MOV",
+      "imageUrl": null
+    },
+    {
+      "id": "82b0b612-e783-450f-b1aa-be4d0ec5f273",
+      "name": "Firestone",
+      "accountNumber": "8790",
+      "address": "",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/home/Delivery Optimization/Delivery Walk Through Videos/Completed and Labeled Videos/8790.MOV",
       "imageUrl": null
     }
   ]
