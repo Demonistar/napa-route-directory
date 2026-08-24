@@ -60,6 +60,11 @@ def to_pwa_shape(dropbox_data: dict) -> dict:
             "notes": loc.get("instructions", ""),
             "videoUrl": loc.get("videoUrl", ""),
             "imageUrl": loc.get("imageUrl", ""),
+            # Additional Generate-Links photos (Street View, Map View, etc.).
+            # The PWA doesn't have a gallery UI to show these yet, but the data
+            # is carried through now so nothing is lost at the sync boundary
+            # once that UI exists — see napa-courier-pwa memory notes.
+            "imageUrls": loc.get("imageUrls", []),
         })
     return {
         "updated": dropbox_data.get("publishedAt", "")[:10],
