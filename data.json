@@ -549,7 +549,7 @@
     },
     {
       "id": "2631f3a6-52fd-4143-b753-9baebe15fb54",
-      "name": "University Tire and Auto",
+      "name": "University Auto & Tire",
       "accountNumber": "3163",
       "address": "614 N College Ave",
       "city": "Fayetteville",
@@ -562,7 +562,7 @@
     },
     {
       "id": "20c648ae-dc2a-4ed4-bbb5-c33ddf0041e7",
-      "name": "Edwins Auto Repair",
+      "name": "Edwin Auto Repair",
       "accountNumber": "318",
       "address": "800 Jefferson St. Suite 1",
       "city": "Springdale",
@@ -588,7 +588,7 @@
     },
     {
       "id": "4ccbcbc7-bdac-4a53-9369-e79243d19421",
-      "name": "G-Force",
+      "name": "G Force Auto Repair",
       "accountNumber": "3836",
       "address": "1324 Crutcher Street",
       "city": "Springdale",
@@ -601,7 +601,7 @@
     },
     {
       "id": "ec622fa2-3d31-4485-9624-f9a2f6050b2e",
-      "name": "Garret Tire and Auto",
+      "name": "Garrett Tire and Auto Center",
       "accountNumber": "6550",
       "address": "1010 Clayton St.",
       "city": "Springdale",
@@ -614,7 +614,7 @@
     },
     {
       "id": "4515b70a-a735-4c1a-8ebb-1f9f38033e8c",
-      "name": "Plaza Tire",
+      "name": "Plaza Tire Service (#75)",
       "accountNumber": "8133",
       "address": "3049 E Robinson Ave",
       "city": "Springdale",
@@ -630,7 +630,7 @@
       "name": "Firestone",
       "accountNumber": "8790",
       "address": "2876 E Mission Blvd",
-      "city": "Springdale",
+      "city": "Fayetteville",
       "state": "AR",
       "zip": "",
       "notes": "",
