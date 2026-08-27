@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-25",
+  "updated": "2026-08-27",
   "locations": [
     {
       "id": "a3290faa-e86b-42cc-bef9-8ccfbe77e8a3",
@@ -19,7 +19,7 @@
       "name": "STRAIGHTLINE AUTOMOTIVE",
       "accountNumber": "161",
       "address": "9141 Greenhouse Rd.",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -32,7 +32,7 @@
       "name": "BENTON COUNTY SHERIFF",
       "accountNumber": "273",
       "address": "1300 SW 14TH ST",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -71,7 +71,7 @@
       "name": "McClarty Daniel CDJ",
       "accountNumber": "322",
       "address": "2201 SE Moberly",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -84,7 +84,7 @@
       "name": "FIRESTONE",
       "accountNumber": "414",
       "address": "1405 N WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -97,7 +97,7 @@
       "name": "CITY OF BENTONVILLE",
       "accountNumber": "852",
       "address": "1000 S.W. 14th ST",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -136,7 +136,7 @@
       "name": "4 WHEEL CONCEPTS",
       "accountNumber": "1663",
       "address": "3011 S.E. MOBERLY LANE",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -188,7 +188,7 @@
       "name": "CARROLL ELECTRIC",
       "accountNumber": "2201",
       "address": "707 SE WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -201,7 +201,7 @@
       "name": "MCLARTY-DANIEL NISSAN - USED",
       "accountNumber": "2677",
       "address": "2501 MOBERLY LN",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -214,7 +214,7 @@
       "name": "MCLARTY-DANIEL NISSAN",
       "accountNumber": "2677",
       "address": "2501 MOBERLY LN",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -227,7 +227,7 @@
       "name": "CRAIN HYUNDAI OF BENTONVILLE",
       "accountNumber": "2687",
       "address": "3000 SE MOBERLY LN",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -240,7 +240,7 @@
       "name": "CREDIT CARS INC.",
       "accountNumber": "2770",
       "address": "3302 S WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -253,7 +253,7 @@
       "name": "MCCLARTY DANIEL BUICK GMC",
       "accountNumber": "2834",
       "address": "2517 SE BEST LN",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -266,7 +266,7 @@
       "name": "DEAN CROWDER CONST.",
       "accountNumber": "2841",
       "address": "804 SE 21ST ST",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -279,7 +279,7 @@
       "name": "CHRISTIAN BROTHERS",
       "accountNumber": "2972",
       "address": "600 S.E. WALTON BLVD.",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -331,7 +331,7 @@
       "name": "B's AUTOMOTIVE",
       "accountNumber": "3901",
       "address": "302 SW REGIONAL AIRPORT BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -344,7 +344,7 @@
       "name": "McClart Ford_New",
       "accountNumber": "3938",
       "address": "2609 S WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -357,7 +357,7 @@
       "name": "McClarty Daniel Ford - NEW",
       "accountNumber": "3938",
       "address": "2609 S WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -370,7 +370,7 @@
       "name": "MCCLARTY DANIEL FORD - USED",
       "accountNumber": "3938",
       "address": "2609 S WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -383,7 +383,7 @@
       "name": "McClarty Ford_Used",
       "accountNumber": "3938",
       "address": "2609 S WALTON BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -435,7 +435,7 @@
       "name": "FRANK FLETCHER HONDA",
       "accountNumber": "6612",
       "address": "2921 SE MOBERLY LN",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -461,7 +461,7 @@
       "name": "NORM THE TIRE MAN",
       "accountNumber": "6816",
       "address": "809 SW 8TH ST",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -487,7 +487,7 @@
       "name": "PLAZA TIRE SERVICE",
       "accountNumber": "6949",
       "address": "901 S.W. REGINAL AIRPORT BLVD",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -513,7 +513,7 @@
       "name": "TIMS AUTOMOTIVE",
       "accountNumber": "8875",
       "address": "904 S.E. 21ST",
-      "city": "BENTONVILLE",
+      "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
@@ -571,7 +571,9 @@
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/coc0eklkojv51fjzejprd/318.MOV?rlkey=qftls5nkpuved7luo2pdxdb3c&dl=0",
       "imageUrl": null,
-      "imageUrls": []
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/cpfaoia5wgmlgig4zaf5d/318.JPG?rlkey=wtdzg8gp5mms6jt9am0pur09e&dl=0"
+      ]
     },
     {
       "id": "bda78efa-d9fd-4c84-a9d7-3175ee62e28a",
@@ -584,7 +586,9 @@
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/j1hwsmhzwwhzqkzc8ns2m/1542.MOV?rlkey=q5l6rowvjdiw149kocx7du641&dl=0",
       "imageUrl": null,
-      "imageUrls": []
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/o9giq3pmb12ysd794j8d2/1542.JPG?rlkey=ihecovgj8wc8ernzlczr2ipgu&dl=0"
+      ]
     },
     {
       "id": "4ccbcbc7-bdac-4a53-9369-e79243d19421",
@@ -597,7 +601,9 @@
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/8hcxmbgd3qkf5suruteb5/3836.MOV?rlkey=pqk3fsksudfokmm0rh4q8ck74&dl=0",
       "imageUrl": null,
-      "imageUrls": []
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/974q7dm91v23wu06k5p1y/3836.JPG?rlkey=b62e9q7a4j50xevexxqe8c00n&dl=0"
+      ]
     },
     {
       "id": "ec622fa2-3d31-4485-9624-f9a2f6050b2e",
@@ -610,7 +616,9 @@
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/ff16646fe2uw380ctj9q5/6550.MOV?rlkey=wagxy7nu2mp3c9wv9kffe2p6w&dl=0",
       "imageUrl": null,
-      "imageUrls": []
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/9yd34dalk76u11yoyt5pb/6550.JPG?rlkey=morb7qhpp8q9kglm24e1242oa&dl=0"
+      ]
     },
     {
       "id": "4515b70a-a735-4c1a-8ebb-1f9f38033e8c",
@@ -623,7 +631,9 @@
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/ympatzi7anvip3eqhc3t9/8133.MOV?rlkey=b6j00glh4t4nye3kk17zlsfoz&dl=0",
       "imageUrl": null,
-      "imageUrls": []
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/msv3fuoledeewr3z9veqo/8133.JPG?rlkey=rc7ssyokw20t5207o2j94u4fs&dl=0"
+      ]
     },
     {
       "id": "82b0b612-e783-450f-b1aa-be4d0ec5f273",
@@ -635,6 +645,112 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/beqmgqzvkwpaa2uyus0vm/8790.MOV?rlkey=59v0uxie7v39yhp3gkhbqtjm8&dl=0",
+      "imageUrl": null,
+      "imageUrls": [
+        "https://www.dropbox.com/scl/fi/agjsk01xsunkyx1m3bma7/8790.JPG?rlkey=pvtozr4vjk8ixnwjwa9mynrgy&dl=0"
+      ]
+    },
+    {
+      "id": "170b42e0-ba8a-4f83-801f-c6d5b936de48",
+      "name": "Ozark Import Specialists Inc",
+      "accountNumber": "800",
+      "address": "3802 Kelley Ave",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/rrgxjgkuxpbwvwi2tj0wv/800.MOV?rlkey=nrtxyzg47gtb9tpfn8gosfov4&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "045b205a-98a9-4ac3-a461-cfab8a62cc94",
+      "name": "Apex DBA Pro Tire",
+      "accountNumber": "989",
+      "address": "3944 Dakodas Place",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/wg7fz780t4gbua0l113vq/989.MOV?rlkey=ah26xrv2mwtrvhezrcpnxwgaa&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "3553ec53-d4e6-471a-816b-4f03db768595",
+      "name": "Arkansas Transmission",
+      "accountNumber": "1970",
+      "address": "3276 W. Sunset Ave",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/inrmb0ebjfb3spmd3mjrm/1970.MOV?rlkey=snqfasss7e3a4pol6okwgl9sz&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "8283aa6f-0cf7-428e-8d9a-ac073428d69f",
+      "name": "Automatic Auto Finance",
+      "accountNumber": "2520",
+      "address": "2911 Alliance Place",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/0zza5bpwn196yktdg7rbp/2520.MOV?rlkey=8owukk4mwpjwxcm18q4eq685k&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "89db069f-0cf3-4cda-9d0c-12a43a91df6a",
+      "name": "1st Choice Auto Repair",
+      "accountNumber": "5848",
+      "address": "2300 Turner St",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/5pyzakspsd6z1w4imte85/5848.MOV?rlkey=7e68a8mhi3lpp6icrg28ui95s&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "191f740d-265f-4d05-9c9b-97d8c44cf688",
+      "name": "Roadside Tires and Auto Repair",
+      "accountNumber": "5862",
+      "address": "1010 Holcomb St",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/xvy2md97g39x5a3f8d5va/5862.MOV?rlkey=dcl0dralxh2lx97s4d8liaher&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "ec99334c-ce1c-44ea-927c-ef4148d347d3",
+      "name": "Henryquez Garage",
+      "accountNumber": "6552",
+      "address": "1012 Schmieding Ave",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/kupmfv8teajhcmds0d3bh/6552.MOV?rlkey=6x8z50cs7vrs3w598htimqv1m&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "4988b4ad-59d6-4eb4-87c2-c81d01cd086b",
+      "name": "Apex Automotive LLC",
+      "accountNumber": "58232",
+      "address": "DBA HCS Auto Repair",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/5l4qe0945u4qhfzaxxl2x/58232.MOV?rlkey=g78cvrxjb5ee06nrtlc1obmyp&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
