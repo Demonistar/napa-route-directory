@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-15",
+  "updated": "2026-09-17",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -1220,6 +1220,110 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/ngfsjzq5ojck74tcsjt54/3938.mp4?rlkey=6ugwbm9t92wksxxe910np732l&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "56a114f8-fa2d-402a-943b-47c3e5c02085",
+      "name": "Byrider - Springdale",
+      "accountNumber": "3707",
+      "address": "2737 N Thompson",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/3i3ex9tkm97xsjix1uw5a/3707.mp4?rlkey=opmisn30ko24du7lqdm2dulvj&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "158b2fb9-068c-4b4d-9487-d2c4274ce2d0",
+      "name": "Power Equipment Company",
+      "accountNumber": "1673",
+      "address": "781 E Randall Wobbe Ln",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/x0c6xg2uz1xh5bot67yy1/1673.mp4?rlkey=ykzkk0vl0q9keqfs3r1typl3w&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "98f75733-a423-48c5-b564-9e19a6fb25c6",
+      "name": "Divine Auto Service & Repair",
+      "accountNumber": "9926",
+      "address": "2950 Alliance Place Suite A",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/hhiunycjate8hhv89cqve/9926.mp4?rlkey=1sn3kw975vyf1hvv8b0l6lixt&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "3bc39da9-a93e-4c06-a4ef-126c39d4f9cf",
+      "name": "Aceituno's Auto Repair Llc",
+      "accountNumber": "9863",
+      "address": "800 Jefferson St. #3",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/xadzkhj8njhr5za4iung6/9863.mp4?rlkey=yxan8be87lyo2013svnw4sb7z&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "fd0a4cc9-b16d-43e2-a7d9-d42ed3c6208a",
+      "name": "Nwa Steel Co Llc",
+      "accountNumber": "8868",
+      "address": "501 E County Line Road",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/i02j1htqvxwjxesv0j4qj/8868.mp4?rlkey=filwk5969nru65i8kexbgdmpr&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "f20b1dc1-9422-4b46-ab9c-6a2e20f6bcc6",
+      "name": "University Auto & Tire",
+      "accountNumber": "8830",
+      "address": "",
+      "city": "Elkins",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/czq4mp5pvfqhdownp0c68/8830.mp4?rlkey=039fk79jpjho3rsvd1n23ysxn&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "63cf3890-e9ed-45cf-8101-454e8b4b2d53",
+      "name": "The Grease Pig Mlk",
+      "accountNumber": "7799",
+      "address": "1499 Martin Luther King Blvd",
+      "city": "Fayetteville",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/33btia430pvz32kowwzbf/7799.mp4?rlkey=g98not675ypnlggfht1v0fbst&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "352e3259-4333-4cd8-b418-7cb631a1d5a2",
+      "name": "Springdale Ford",
+      "accountNumber": "5999",
+      "address": "2259 N Thompson St",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/9xy7z8kmlyshvwnu83yhh/5999.mp4?rlkey=xp1j9mtt8gk907ge8n7yyj32k&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
