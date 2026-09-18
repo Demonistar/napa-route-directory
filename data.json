@@ -55,7 +55,7 @@
     },
     {
       "id": "3b8e3d1f-1a04-474d-a296-9dd777ce6f97",
-      "name": "Big O Tire - Bentonville",
+      "name": "Big O Tire",
       "accountNumber": "309",
       "address": "2809 SE J St",
       "city": "Bentonville",
@@ -172,7 +172,7 @@
     },
     {
       "id": "5c6f3f54-c732-4d9d-bee0-ab95916db0c2",
-      "name": "Penske Truck Leasing - Lowell",
+      "name": "Penske Truck Leasing",
       "accountNumber": "748",
       "address": "821 S Bloomington St",
       "city": "Lowell",
@@ -315,7 +315,7 @@
     },
     {
       "id": "31ea995f-2175-4049-9111-4af1de1251bc",
-      "name": "Seeburg - Rogers",
+      "name": "Seeburg",
       "accountNumber": "1935",
       "address": "2880 W Walnut",
       "city": "Rogers",
@@ -380,7 +380,7 @@
     },
     {
       "id": "0a64b48e-0d18-4581-af4e-21df54461e84",
-      "name": "Carroll Electric - Bentonville",
+      "name": "Carroll Electric",
       "accountNumber": "2201",
       "address": "707 SE Walton Blvd",
       "city": "Bentonville",
@@ -393,7 +393,7 @@
     },
     {
       "id": "aa087227-1c54-4ebc-b5fe-481c8813be42",
-      "name": "Christian Brothers - Springdale",
+      "name": "Christian Brothers",
       "accountNumber": "2255",
       "address": "5285 Members Lane",
       "city": "Springdale",
@@ -679,7 +679,7 @@
     },
     {
       "id": "da8585a6-1c0b-4825-bfec-de2ecd1a01ec",
-      "name": "Christian Brothers - Fayetteville",
+      "name": "Christian Brothers",
       "accountNumber": "4251",
       "address": "2870 E Joyce Blvd",
       "city": "Fayetteville",
@@ -692,7 +692,7 @@
     },
     {
       "id": "057c9ab9-fb23-4293-9336-0813d7e1443e",
-      "name": "Mclarty Cdjr - Springdale",
+      "name": "Mclarty Cdjr",
       "accountNumber": "4563",
       "address": "3709 S. Thompson St",
       "city": "Springdale",
@@ -1030,7 +1030,7 @@
     },
     {
       "id": "40be2a9e-c88d-4453-acf5-0e241ae4a25a",
-      "name": "Firestone - Fayetteville",
+      "name": "Firestone",
       "accountNumber": "8790",
       "address": "2876 E Mission Blvd",
       "city": "Fayetteville",
@@ -1212,7 +1212,7 @@
     },
     {
       "id": "56a114f8-fa2d-402a-943b-47c3e5c02085",
-      "name": "Byrider - Springdale",
+      "name": "Byrider",
       "accountNumber": "3707",
       "address": "2737 N Thompson",
       "city": "Springdale",
@@ -1316,7 +1316,7 @@
     },
     {
       "id": "ea38d64c-b8b7-46d5-b6a7-5981197a846f",
-      "name": "Seeburg - Fayetteville",
+      "name": "Seeburg",
       "accountNumber": "4242",
       "address": "1599 N College Ave",
       "city": "Fayetteville",
