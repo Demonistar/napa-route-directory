@@ -204,6 +204,18 @@ main{
   padding:3px 0;
 }
 
+.ticket-city{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:700;
+  color:#fff;
+  background:var(--navy);
+  padding:3px 7px;
+  border-radius:4px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
 /* Green ring on the account badge signals a site photo is available;
    tapping anywhere on the card (outside Map/Watch) opens it — see
    ticket--has-image / click handler in app.js. */
@@ -424,7 +436,8 @@ main{
     flex-basis:100%;
     order:1;
   }
-  .ticket-account{
+  .ticket-account,
+  .ticket-city{
     order:0;
   }
   .ticket-btns{

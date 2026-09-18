@@ -74,6 +74,31 @@ function getMapUrl(loc) {
   return "https://maps.google.com/?q=" + encodeURIComponent(parts.join(", "));
 }
 
+// Fixed 3-letter city codes for the NWA cities in the directory, so the
+// same city always abbreviates the same way regardless of capitalization
+// in the data. Any city not in this list falls back to its own first
+// 3 letters, title-cased (e.g. "Elkins" -> "Elk" is already covered above,
+// but a brand-new city like "Huntsville" would fall back to "Hun").
+const CITY_CODES = {
+  "bentonville": "Ben",
+  "rogers": "Rog",
+  "springdale": "Spr",
+  "fayetteville": "Fay",
+  "lowell": "Low",
+  "cave springs": "Cav",
+  "centerton": "Cen",
+  "elkins": "Elk"
+};
+
+function getCityCode(city) {
+  const trimmed = String(city || "").trim();
+  if (!trimmed) return "";
+  const known = CITY_CODES[trimmed.toLowerCase()];
+  if (known) return known;
+  const letters = trimmed.slice(0, 3);
+  return letters.charAt(0).toUpperCase() + letters.slice(1).toLowerCase();
+}
+
 function openVideo(loc) {
   videoModalTitle.textContent = loc.name;
   videoPlayer.src = getPlayableUrl(loc.videoUrl);
@@ -195,12 +220,14 @@ function render(list) {
     const mapUrl = getMapUrl(loc);
     const hasImage = !!loc.imageUrl || (Array.isArray(loc.imageUrls) && loc.imageUrls.length > 0);
     const hasVideo = isPlayableVideoUrl(loc.videoUrl);
+    const cityCode = getCityCode(loc.city);
 
     const isFavorite = favorites.has(loc.id);
     li.className = "ticket" + (hasImage ? " ticket--has-image" : "") + (isFavorite ? " ticket--favorite" : "");
 
     li.innerHTML = `
       ${loc.accountNumber ? `<span class="ticket-account${hasImage ? " ticket-account--has-image" : ""}">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
+      ${cityCode ? `<span class="ticket-city">${escapeHtml(cityCode)}</span>` : ""}
       <span class="ticket-name">${isFavorite ? `<span class="ticket-fav-star" aria-label="Favorited">&#9733;</span>` : ""}${escapeHtml(loc.name)}</span>
       <span class="ticket-btns">
         ${mapUrl ? `<a class="ticket-btn ticket-btn-map" href="${escapeAttr(mapUrl)}" target="_blank" rel="noopener" aria-label="Open map for ${escapeHtml(loc.name)}">Map</a>` : ""}
