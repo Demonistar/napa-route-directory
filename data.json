@@ -1547,6 +1547,19 @@
       "videoUrl": "https://www.dropbox.com/scl/fi/ild5psxve6884selw45lt/7099.mp4?rlkey=8hs2bchxuviddjfcinvsyxam2&dl=0",
       "imageUrl": null,
       "imageUrls": []
+    },
+    {
+      "id": "e0947994-52bb-42a8-911c-fb8853107324",
+      "name": "George's, Inc.",
+      "accountNumber": "7693",
+      "address": "1302 N Kansas St",
+      "city": "Springdale",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/zary9rawvexwjztweerbo/7693.mp4?rlkey=bghy6j84z0ld8slmexes80et2&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
     }
   ]
 }
