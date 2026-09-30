@@ -30,8 +30,8 @@
 
 <main>
   <div class="search-wrap">
-    <input id="searchInput" type="text" inputmode="search" autocomplete="off"
-      placeholder="Search by store name, street, or city&hellip;" aria-label="Search stops">
+    <input id="searchInput" type="text" inputmode="numeric" autocomplete="off"
+      placeholder="Search by account number&hellip;" aria-label="Search stops by account number">
     <div class="sort-row">
       <label for="sortSelect" class="sort-label">Sort by</label>
       <select id="sortSelect" aria-label="Sort stops">
@@ -50,7 +50,7 @@
 
   <div id="emptyState" class="empty-state" hidden>
     <p id="emptyTitle" class="empty-title">No match on the board.</p>
-    <p id="emptySub" class="empty-sub">Try the street name or just the city.</p>
+    <p id="emptySub" class="empty-sub">Search is by account number only.</p>
   </div>
 </main>
 

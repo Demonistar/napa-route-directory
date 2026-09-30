@@ -1,5 +1,12 @@
 const DATA_URL = "data.json";
 
+// Drivers don't reliably think to hit the manual refresh button, so pull a
+// fresh copy of data.json on a timer too. Re-uses loadData's existing
+// forceNetwork path (bypasses cache, re-renders the results list) rather
+// than reloading the whole page, so it can't interrupt a video that's
+// playing or wipe out whatever's typed in the search box.
+const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
+
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
@@ -206,7 +213,7 @@ function render(list) {
       emptySub.textContent = "The directory is being updated, check back soon.";
     } else {
       emptyTitle.textContent = "No match on the board.";
-      emptySub.textContent = "Try the street name or just the city.";
+      emptySub.textContent = "Search is by account number only.";
     }
     emptyState.hidden = false;
     return;
@@ -298,13 +305,16 @@ function escapeHtml(str) {
 }
 function escapeAttr(str) { return escapeHtml(str); }
 
+// Account-number-only search. Name/address/city/state/zip are intentionally
+// excluded — drivers were matching on the wrong stop by typing a street name
+// or business name that happened to match a different account. Account
+// number is the one field that isn't ambiguous.
 function filterLocations(query) {
   const q = query.trim().toLowerCase();
   if (!q) return allLocations;
   return allLocations.filter(loc => {
-    const haystack = [loc.name, loc.address, loc.city, loc.state, loc.zip, loc.accountNumber]
-      .filter(Boolean).join(" ").toLowerCase();
-    return haystack.includes(q);
+    const accountNumber = String(loc.accountNumber || "").toLowerCase();
+    return accountNumber.includes(q);
   });
 }
 
@@ -402,6 +412,7 @@ window.addEventListener("offline", updateOfflineTag);
 updateOfflineTag();
 
 loadData();
+setInterval(() => loadData({ forceNetwork: true }), AUTO_REFRESH_MS);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
