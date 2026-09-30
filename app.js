@@ -352,6 +352,10 @@ saveFilterBtn.addEventListener("click", () => {
   savedCities = new Set(pendingCities);
   saveCustomCities(savedCities);
   applySearch();
+  // Close so the now-filtered list underneath is actually visible — this is
+  // the confirmation that it saved. Without this, the panel just sits there
+  // covering the list and it looks like the button did nothing.
+  closeSettingsModal();
 });
 
 resetFilterBtn.addEventListener("click", () => {
