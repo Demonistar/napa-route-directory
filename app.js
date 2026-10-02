@@ -78,6 +78,74 @@ function saveCollapsedCities(set) {
 }
 let collapsedCities = loadCollapsedCities();
 
+// ── Favorite cities (per-phone, local only) ──────────────────────────────────
+// Long-press a city header — either in its normal State > City spot or in
+// the pinned Favorites section — to toggle it. A favorited city gets pinned
+// in a "Favorite Cities" section at the very top of the browsing tree,
+// always fully expanded, in addition to staying in its normal alphabetical
+// spot further down.
+const FAVORITE_CITIES_KEY = "napa-route-directory-favorite-cities";
+
+function loadFavoriteCities() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(FAVORITE_CITIES_KEY) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+function saveFavoriteCities(set) {
+  try {
+    localStorage.setItem(FAVORITE_CITIES_KEY, JSON.stringify([...set]));
+  } catch {
+    // localStorage unavailable — favorite cities just won't persist.
+  }
+}
+let favoriteCities = loadFavoriteCities();
+
+function toggleFavoriteCity(key) {
+  if (favoriteCities.has(key)) favoriteCities.delete(key);
+  else favoriteCities.add(key);
+  saveFavoriteCities(favoriteCities);
+  applySearch();
+}
+
+// Wires long-press-to-toggle-favorite onto a city header element. Flags
+// el.dataset.longPressFired so the header's own click handler (collapse in
+// the normal tree, none in the pinned section) can tell a long-press
+// happened and skip its own action — mirrors the ticket long-press pattern.
+function wireCityLongPress(el, key) {
+  const LONG_PRESS_MS = 550;
+  const MOVE_CANCEL_PX = 10;
+  let pressTimer = null;
+  let startX = 0;
+  let startY = 0;
+
+  const cancelPress = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+  };
+
+  el.addEventListener("pointerdown", e => {
+    el.dataset.longPressFired = "";
+    startX = e.clientX;
+    startY = e.clientY;
+    pressTimer = setTimeout(() => {
+      el.dataset.longPressFired = "1";
+      toggleFavoriteCity(key);
+    }, LONG_PRESS_MS);
+  });
+  el.addEventListener("pointermove", e => {
+    if (Math.abs(e.clientX - startX) > MOVE_CANCEL_PX || Math.abs(e.clientY - startY) > MOVE_CANCEL_PX) {
+      cancelPress();
+    }
+  });
+  el.addEventListener("pointerup", cancelPress);
+  el.addEventListener("pointercancel", cancelPress);
+  el.addEventListener("pointerleave", cancelPress);
+}
+
 function toggleFavorite(id) {
   if (favorites.has(id)) favorites.delete(id);
   else favorites.add(id);
@@ -340,6 +408,48 @@ function renderGrouped(locations) {
   const states = [...byState.keys()].sort((a, b) => a.localeCompare(b));
   const frag = document.createDocumentFragment();
 
+  // ── Pinned Favorites section ───────────────────────────────────────────
+  // Favorited cities, alphabetical by city name (state as tiebreaker),
+  // always fully expanded. These also stay in their normal State > City
+  // spot further down — this is a pinned shortcut, not a move.
+  const pinned = [];
+  for (const state of states) {
+    for (const city of byState.get(state).keys()) {
+      const key = cityKey(state, city);
+      if (favoriteCities.has(key)) pinned.push({ state, city, key, locs: byState.get(state).get(city) });
+    }
+  }
+  pinned.sort((a, b) => compareText(a.city, b.city) || compareText(a.state, b.state));
+
+  if (pinned.length > 0) {
+    const favSection = document.createElement("div");
+    favSection.className = "favorites-group";
+
+    const favHeader = document.createElement("div");
+    favHeader.className = "favorites-group-header";
+    favHeader.innerHTML = `<span class="city-group-star">&#9733;</span> Favorite Cities`;
+    favSection.appendChild(favHeader);
+
+    for (const entry of pinned) {
+      const favCityHeader = document.createElement("div");
+      favCityHeader.className = "favorite-city-header";
+      favCityHeader.innerHTML = `
+        <span class="city-group-star">&#9733;</span>
+        <span class="city-group-name">${escapeHtml(entry.city)}, ${escapeHtml(entry.state)}</span>
+        <span class="city-group-count">${entry.locs.length}</span>
+      `;
+      wireCityLongPress(favCityHeader, entry.key);
+      favSection.appendChild(favCityHeader);
+
+      const favList = document.createElement("ul");
+      favList.className = "ticket-list";
+      applyFavoritesFirst(sortLocations(entry.locs, sortSelect.value)).forEach(loc => favList.appendChild(buildTicketLi(loc)));
+      favSection.appendChild(favList);
+    }
+
+    frag.appendChild(favSection);
+  }
+
   for (const state of states) {
     const stateSection = document.createElement("div");
     stateSection.className = "state-group";
@@ -356,6 +466,7 @@ function renderGrouped(locations) {
       const key = cityKey(state, city);
       const cityLocs = applyFavoritesFirst(sortLocations(citiesMap.get(city), sortSelect.value));
       const collapsed = collapsedCities.has(key);
+      const isFavoriteCity = favoriteCities.has(key);
 
       const citySection = document.createElement("div");
       citySection.className = "city-group";
@@ -366,6 +477,7 @@ function renderGrouped(locations) {
       cityHeader.setAttribute("aria-expanded", String(!collapsed));
       cityHeader.innerHTML = `
         <span class="city-group-chevron">${collapsed ? "&#9656;" : "&#9662;"}</span>
+        ${isFavoriteCity ? `<span class="city-group-star" aria-label="Favorited">&#9733;</span>` : ""}
         <span class="city-group-name">${escapeHtml(city)}</span>
         <span class="city-group-count">${cityLocs.length}</span>
       `;
@@ -375,7 +487,14 @@ function renderGrouped(locations) {
       cityList.hidden = collapsed;
       cityLocs.forEach(loc => cityList.appendChild(buildTicketLi(loc)));
 
+      wireCityLongPress(cityHeader, key);
       cityHeader.addEventListener("click", () => {
+        // A long-press just toggled this city's favorite status — don't
+        // also collapse/expand it off the back of that same press.
+        if (cityHeader.dataset.longPressFired === "1") {
+          cityHeader.dataset.longPressFired = "";
+          return;
+        }
         const nowCollapsed = !cityList.hidden;
         cityList.hidden = nowCollapsed;
         cityHeader.classList.toggle("city-group-header--collapsed", nowCollapsed);

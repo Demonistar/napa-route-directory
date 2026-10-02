@@ -425,9 +425,59 @@ main{
   font-family:var(--sans);
   cursor:pointer;
   text-align:left;
+  /* Long-press favorites a city (see wireCityLongPress in app.js) — without
+     this, a long-press on the header text triggers the browser's native
+     text-selection/copy menu instead. */
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  user-select:none;
 }
 .city-group-header:active{
   transform:scale(0.99);
+}
+
+.city-group-star{
+  color:var(--yellow);
+  flex-shrink:0;
+}
+
+/* ---------- Favorite cities (pinned section) ---------- */
+.favorites-group{
+  margin-bottom:18px;
+  padding-bottom:14px;
+  border-bottom:2px dashed var(--yellow);
+}
+
+.favorites-group-header{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:800;
+  font-size:13px;
+  color:var(--navy);
+  font-family:var(--mono);
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  margin:0 0 8px;
+}
+
+.favorite-city-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#FFF8E1;
+  border:1px solid var(--yellow);
+  border-radius:8px;
+  padding:9px 12px;
+  font-family:var(--sans);
+  margin-top:8px;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+.favorite-city-header + .ticket-list{
+  margin-top:8px;
 }
 
 .city-group-chevron{
