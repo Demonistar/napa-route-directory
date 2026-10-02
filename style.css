@@ -460,6 +460,13 @@ main{
   margin-top:8px;
 }
 
+/* .ticket-list sets display:flex at equal specificity to the browser's own
+   [hidden]{display:none} rule, and author CSS wins that tie — so without
+   this, setting .hidden = true on a city's list never actually hid it. */
+.city-group-list[hidden]{
+  display:none;
+}
+
 /* ---------- Empty state ---------- */
 .empty-state{
   text-align:center;
