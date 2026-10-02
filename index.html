@@ -24,7 +24,6 @@
         <p class="brand-sub"><span id="stopCountText">loading stops&hellip;</span><span id="refreshCountdown" class="refresh-countdown" hidden></span></p>
       </div>
     </div>
-    <button id="settingsBtn" class="refresh-btn settings-btn" aria-label="Custom city filter settings">&#9881;</button>
     <button id="refreshBtn" class="refresh-btn" aria-label="Refresh data">&#8635;</button>
   </div>
 </header>
@@ -38,16 +37,13 @@
       <select id="sortSelect" aria-label="Sort stops">
         <option value="name">Site Name (A&ndash;Z)</option>
         <option value="account">Account Number</option>
-        <option value="city">City (A&ndash;Z)</option>
-        <option value="state_city_name">State &rarr; City &rarr; Site Name</option>
-        <option value="state_city_account">State &rarr; City &rarr; Account Number</option>
       </select>
     </div>
   </div>
 
   <p id="statusLine" class="status-line" role="status"></p>
 
-  <ul id="results" class="ticket-list"></ul>
+  <div id="results"></div>
 
   <div id="emptyState" class="empty-state" hidden>
     <p id="emptyTitle" class="empty-title">No match on the board.</p>
@@ -76,43 +72,6 @@
          back to this grid. Single-photo sites just show one thumbnail. -->
     <div id="imageModalGrid" class="image-modal-grid"></div>
     <img id="imageModalImg" class="video-modal-player" alt="" hidden>
-  </div>
-</div>
-
-<div id="settingsModal" class="video-modal" hidden>
-  <div class="settings-modal-inner">
-    <div class="video-modal-head">
-      <span class="video-modal-title">Custom City Filter</span>
-      <button id="settingsModalClose" type="button" class="video-modal-close" aria-label="Close settings">&#10005;</button>
-    </div>
-    <div class="settings-modal-body">
-      <div class="settings-mode-row">
-        <label class="settings-mode-option">
-          <input type="radio" name="viewMode" id="modeAll" value="all"> All stops
-        </label>
-        <label class="settings-mode-option">
-          <input type="radio" name="viewMode" id="modeCustom" value="custom"> Custom cities
-        </label>
-      </div>
-
-      <button id="settingsHelpBtn" type="button" class="settings-help-btn">How does this work?</button>
-      <div id="settingsHelpPanel" class="settings-help-panel" hidden>
-        <ol>
-          <li>Check the states and cities below that you want to always see.</li>
-          <li>Tap "Save Custom Filter".</li>
-          <li>Switch to "Custom cities" above any time to see just those, or "All stops" to see everything.</li>
-          <li>Search always checks every stop by account number no matter which mode is on, so you can still search anywhere.</li>
-          <li>Tap "Reset Custom Filter" to clear your picks and start over.</li>
-        </ol>
-      </div>
-
-      <div id="cityChecklist" class="city-checklist"></div>
-
-      <div class="settings-actions">
-        <button id="saveFilterBtn" type="button" class="settings-btn-save">Save Custom Filter</button>
-        <button id="resetFilterBtn" type="button" class="settings-btn-reset">Reset Custom Filter</button>
-      </div>
-    </div>
   </div>
 </div>
 

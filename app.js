@@ -28,16 +28,6 @@ const imageModalGrid = document.getElementById("imageModalGrid");
 const imageModalImg = document.getElementById("imageModalImg");
 const imageModalTitle = document.getElementById("imageModalTitle");
 const imageModalClose = document.getElementById("imageModalClose");
-const settingsBtn = document.getElementById("settingsBtn");
-const settingsModal = document.getElementById("settingsModal");
-const settingsModalClose = document.getElementById("settingsModalClose");
-const modeAllRadio = document.getElementById("modeAll");
-const modeCustomRadio = document.getElementById("modeCustom");
-const settingsHelpBtn = document.getElementById("settingsHelpBtn");
-const settingsHelpPanel = document.getElementById("settingsHelpPanel");
-const cityChecklist = document.getElementById("cityChecklist");
-const saveFilterBtn = document.getElementById("saveFilterBtn");
-const resetFilterBtn = document.getElementById("resetFilterBtn");
 
 let allLocations = [];
 
@@ -61,57 +51,32 @@ function saveFavorites(set) {
 }
 let favorites = loadFavorites();
 
-// ── Custom city filter (per-phone, local only) ──────────────────────────────
-// Two independent pieces of saved state:
-//  - viewMode: "all" or "custom" — which mode is currently active.
-//  - customCities: the set of "State||City" keys the driver saved as their
-//    custom list. Applies to the BROWSING list only (empty search box).
-//    Search always searches every stop by account number regardless of mode
-//    or saved cities — see filterLocations().
-const VIEW_MODE_KEY = "napa-route-directory-view-mode";
-const CUSTOM_CITIES_KEY = "napa-route-directory-custom-cities";
+// ── State → City browsing tree (per-phone, local only) ──────────────────────
+// Browsing (empty search box) is always grouped by State, then City, both
+// alphabetical. Every city header is independently collapsible; which ones
+// are collapsed persists per phone so a driver's view stays the way they
+// left it. States themselves are always fully listed — only cities collapse.
+const COLLAPSED_CITIES_KEY = "napa-route-directory-collapsed-cities";
 
 function cityKey(state, city) {
   return `${(state || "").trim()}||${(city || "").trim()}`;
 }
 
-function loadViewMode() {
+function loadCollapsedCities() {
   try {
-    const stored = localStorage.getItem(VIEW_MODE_KEY);
-    return stored === "custom" ? "custom" : "all";
-  } catch {
-    return "all";
-  }
-}
-function saveViewMode(mode) {
-  try {
-    localStorage.setItem(VIEW_MODE_KEY, mode);
-  } catch {
-    // localStorage unavailable — mode just won't persist across reloads.
-  }
-}
-let viewMode = loadViewMode();
-
-function loadCustomCities() {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(CUSTOM_CITIES_KEY) || "[]"));
+    return new Set(JSON.parse(localStorage.getItem(COLLAPSED_CITIES_KEY) || "[]"));
   } catch {
     return new Set();
   }
 }
-function saveCustomCities(set) {
+function saveCollapsedCities(set) {
   try {
-    localStorage.setItem(CUSTOM_CITIES_KEY, JSON.stringify([...set]));
+    localStorage.setItem(COLLAPSED_CITIES_KEY, JSON.stringify([...set]));
   } catch {
-    // localStorage unavailable — custom filter just won't persist.
+    // localStorage unavailable — collapsed state just won't persist.
   }
 }
-// The saved, applied filter. Only this (never pendingCities) affects what's
-// shown on the main list.
-let savedCities = loadCustomCities();
-// Working copy while the settings panel is open — checkbox taps only touch
-// this, so closing the panel without hitting Save discards the edits.
-let pendingCities = new Set(savedCities);
+let collapsedCities = loadCollapsedCities();
 
 function toggleFavorite(id) {
   if (favorites.has(id)) favorites.delete(id);
@@ -260,217 +225,175 @@ imageModal.addEventListener("click", e => {
   if (e.target === imageModal) closeImage();
 });
 
-// ── Custom city filter settings panel ───────────────────────────────────────
-
-// Builds the state/city checklist from whatever's actually in the currently
-// loaded data (not hardcoded), so it stays correct as stops are added, moved,
-// or removed. Reflects pendingCities (the panel's working copy), not
-// savedCities, so re-opening the panel shows whatever was last confirmed.
-function renderCityChecklist() {
-  const byState = new Map();
-  for (const loc of allLocations) {
-    const state = (loc.state || "").trim();
-    const city = (loc.city || "").trim();
-    if (!state || !city) continue;
-    if (!byState.has(state)) byState.set(state, new Set());
-    byState.get(state).add(city);
-  }
-
-  if (byState.size === 0) {
-    cityChecklist.innerHTML = `<p class="city-checklist-empty">No stops loaded yet.</p>`;
-    return;
-  }
-
-  const states = [...byState.keys()].sort((a, b) => a.localeCompare(b));
-  cityChecklist.innerHTML = states.map(state => {
-    const cities = [...byState.get(state)].sort((a, b) => a.localeCompare(b));
-    const items = cities.map(city => {
-      const key = cityKey(state, city);
-      const checked = pendingCities.has(key) ? "checked" : "";
-      return `
-        <label class="city-checklist-item">
-          <input type="checkbox" data-city-key="${escapeAttr(key)}" ${checked}>
-          ${escapeHtml(city)}
-        </label>`;
-    }).join("");
-    return `
-      <div class="city-checklist-group">
-        <div class="city-checklist-state">${escapeHtml(state)}</div>
-        ${items}
-      </div>`;
-  }).join("");
-}
-
-function openSettingsModal() {
-  // Reset the working copy to whatever's actually saved, so unsaved edits
-  // from a previous open (closed without hitting Save) don't carry over.
-  pendingCities = new Set(savedCities);
-  modeAllRadio.checked = viewMode === "all";
-  modeCustomRadio.checked = viewMode === "custom";
-  settingsHelpPanel.hidden = true;
-  renderCityChecklist();
-  settingsModal.hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeSettingsModal() {
-  settingsModal.hidden = true;
-  document.body.style.overflow = "";
-}
-
-settingsBtn.addEventListener("click", openSettingsModal);
-settingsModalClose.addEventListener("click", closeSettingsModal);
-settingsModal.addEventListener("click", e => {
-  if (e.target === settingsModal) closeSettingsModal();
-});
-
-settingsHelpBtn.addEventListener("click", () => {
-  settingsHelpPanel.hidden = !settingsHelpPanel.hidden;
-});
-
-// Mode switch takes effect immediately, live, on the main list — it's just
-// a toggle, not something that needs an explicit Save like the city picks.
-function applyViewMode(mode) {
-  viewMode = mode;
-  saveViewMode(viewMode);
-  applySearch();
-}
-modeAllRadio.addEventListener("change", () => { if (modeAllRadio.checked) applyViewMode("all"); });
-modeCustomRadio.addEventListener("change", () => { if (modeCustomRadio.checked) applyViewMode("custom"); });
-
-// Checkbox taps only touch the working copy (pendingCities) — nothing is
-// applied to the main list until Save Custom Filter is pressed.
-cityChecklist.addEventListener("change", e => {
-  const checkbox = e.target.closest("input[type=checkbox][data-city-key]");
-  if (!checkbox) return;
-  const key = checkbox.dataset.cityKey;
-  if (checkbox.checked) pendingCities.add(key);
-  else pendingCities.delete(key);
-});
-
-saveFilterBtn.addEventListener("click", () => {
-  savedCities = new Set(pendingCities);
-  saveCustomCities(savedCities);
-  applySearch();
-  // Close so the now-filtered list underneath is actually visible — this is
-  // the confirmation that it saved. Without this, the panel just sits there
-  // covering the list and it looks like the button did nothing.
-  closeSettingsModal();
-});
-
-resetFilterBtn.addEventListener("click", () => {
-  savedCities = new Set();
-  pendingCities = new Set();
-  saveCustomCities(savedCities);
-  renderCityChecklist();
-  applySearch();
-});
-
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if (!videoModal.hidden) closeVideo();
     if (!imageModal.hidden) closeImage();
-    if (!settingsModal.hidden) closeSettingsModal();
   }
 });
 
-function render(list) {
+// Builds one <li class="ticket"> with all its interactivity (tap-to-open
+// photo, Watch button, long-press-to-favorite). Shared by the flat search
+// results list and the grouped state/city browsing tree so the two never
+// drift out of sync.
+function buildTicketLi(loc) {
+  const li = document.createElement("li");
+
+  const mapUrl = getMapUrl(loc);
+  const hasImage = !!loc.imageUrl || (Array.isArray(loc.imageUrls) && loc.imageUrls.length > 0);
+  const hasVideo = isPlayableVideoUrl(loc.videoUrl);
+  const cityCode = getCityCode(loc.city);
+
+  const isFavorite = favorites.has(loc.id);
+  li.className = "ticket" + (hasImage ? " ticket--has-image" : "") + (isFavorite ? " ticket--favorite" : "");
+
+  li.innerHTML = `
+    ${loc.accountNumber ? `<span class="ticket-account${hasImage ? " ticket-account--has-image" : ""}">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
+    ${cityCode ? `<span class="ticket-city">${escapeHtml(cityCode)}</span>` : ""}
+    <span class="ticket-name">${isFavorite ? `<span class="ticket-fav-star" aria-label="Favorited">&#9733;</span>` : ""}${escapeHtml(loc.name)}</span>
+    <span class="ticket-btns">
+      ${mapUrl ? `<a class="ticket-btn ticket-btn-map" href="${escapeAttr(mapUrl)}" target="_blank" rel="noopener" aria-label="Open map for ${escapeHtml(loc.name)}">Map</a>` : ""}
+      ${hasVideo ? `<button type="button" class="ticket-btn ticket-btn-watch" aria-label="Watch video for ${escapeHtml(loc.name)}">&#9654; Watch</button>` : ""}
+    </span>
+  `;
+
+  // Tapping the card itself (not the Map/Watch buttons) opens the site
+  // photo, if there is one. The account-number badge gets a green ring
+  // (via .ticket-account--has-image in CSS) as the visual cue that a
+  // photo is available — replaces the old standalone Photo button.
+  if (hasImage) {
+    li.addEventListener("click", e => {
+      if (longPressFired) { longPressFired = false; return; }
+      if (e.target.closest("a, button")) return;
+      openImage(loc);
+    });
+  }
+  if (hasVideo) {
+    li.querySelector(".ticket-btn-watch").addEventListener("click", () => openVideo(loc));
+  }
+
+  // ── Long-press to favorite / unfavorite ─────────────────────────────
+  // Hold ~550ms without moving to toggle. Suppresses the trailing click
+  // (longPressFired) so a favorite-toggle never also opens the photo.
+  const LONG_PRESS_MS = 550;
+  const MOVE_CANCEL_PX = 10;
+  let pressTimer = null;
+  let longPressFired = false;
+  let startX = 0;
+  let startY = 0;
+
+  const cancelPress = () => {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+  };
+
+  li.addEventListener("pointerdown", e => {
+    if (e.target.closest("a, button")) return;
+    longPressFired = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    pressTimer = setTimeout(() => {
+      longPressFired = true;
+      toggleFavorite(loc.id);
+    }, LONG_PRESS_MS);
+  });
+  li.addEventListener("pointermove", e => {
+    if (Math.abs(e.clientX - startX) > MOVE_CANCEL_PX || Math.abs(e.clientY - startY) > MOVE_CANCEL_PX) {
+      cancelPress();
+    }
+  });
+  li.addEventListener("pointerup", cancelPress);
+  li.addEventListener("pointercancel", cancelPress);
+  li.addEventListener("pointerleave", cancelPress);
+
+  return li;
+}
+
+// Flat results list — used for search matches. Assumes list is non-empty;
+// callers handle the empty state themselves.
+function renderFlatList(list) {
+  resultsEl.innerHTML = "";
+  const ul = document.createElement("ul");
+  ul.className = "ticket-list";
+  list.forEach(loc => ul.appendChild(buildTicketLi(loc)));
+  resultsEl.appendChild(ul);
+}
+
+// Grouped browsing view: State (always fully listed, alphabetical) → City
+// (alphabetical, independently collapsible) → that city's locations.
+// Assumes locations is non-empty; callers handle the empty state themselves.
+function renderGrouped(locations) {
   resultsEl.innerHTML = "";
 
-  if (list.length === 0) {
-    if (allLocations.length === 0) {
-      emptyTitle.textContent = "No current locations listed.";
-      emptySub.textContent = "The directory is being updated, check back soon.";
-    } else if (!searchInput.value.trim() && viewMode === "custom" && savedCities.size > 0) {
-      // Browsing (no search typed) in Custom mode, but the saved cities
-      // don't match anything currently in the data — e.g. a stop's city
-      // changed, or every stop in a saved city was removed.
-      emptyTitle.textContent = "No stops in your custom cities.";
-      emptySub.textContent = "Open settings to change which cities are shown.";
-    } else {
-      emptyTitle.textContent = "No match on the board.";
-      emptySub.textContent = "Search is by account number only.";
-    }
-    emptyState.hidden = false;
-    return;
+  const byState = new Map();
+  for (const loc of locations) {
+    const state = (loc.state || "").trim() || "Unknown";
+    const city = (loc.city || "").trim() || "Unknown";
+    if (!byState.has(state)) byState.set(state, new Map());
+    const cities = byState.get(state);
+    if (!cities.has(city)) cities.set(city, []);
+    cities.get(city).push(loc);
   }
-  emptyState.hidden = true;
 
+  const states = [...byState.keys()].sort((a, b) => a.localeCompare(b));
   const frag = document.createDocumentFragment();
-  list.forEach(loc => {
-    const li = document.createElement("li");
 
-    const mapUrl = getMapUrl(loc);
-    const hasImage = !!loc.imageUrl || (Array.isArray(loc.imageUrls) && loc.imageUrls.length > 0);
-    const hasVideo = isPlayableVideoUrl(loc.videoUrl);
-    const cityCode = getCityCode(loc.city);
+  for (const state of states) {
+    const stateSection = document.createElement("div");
+    stateSection.className = "state-group";
 
-    const isFavorite = favorites.has(loc.id);
-    li.className = "ticket" + (hasImage ? " ticket--has-image" : "") + (isFavorite ? " ticket--favorite" : "");
+    const stateHeader = document.createElement("div");
+    stateHeader.className = "state-group-header";
+    stateHeader.textContent = state;
+    stateSection.appendChild(stateHeader);
 
-    li.innerHTML = `
-      ${loc.accountNumber ? `<span class="ticket-account${hasImage ? " ticket-account--has-image" : ""}">#${escapeHtml(loc.accountNumber)}</span>` : `<span class="ticket-account ticket-account-empty"></span>`}
-      ${cityCode ? `<span class="ticket-city">${escapeHtml(cityCode)}</span>` : ""}
-      <span class="ticket-name">${isFavorite ? `<span class="ticket-fav-star" aria-label="Favorited">&#9733;</span>` : ""}${escapeHtml(loc.name)}</span>
-      <span class="ticket-btns">
-        ${mapUrl ? `<a class="ticket-btn ticket-btn-map" href="${escapeAttr(mapUrl)}" target="_blank" rel="noopener" aria-label="Open map for ${escapeHtml(loc.name)}">Map</a>` : ""}
-        ${hasVideo ? `<button type="button" class="ticket-btn ticket-btn-watch" aria-label="Watch video for ${escapeHtml(loc.name)}">&#9654; Watch</button>` : ""}
-      </span>
-    `;
+    const citiesMap = byState.get(state);
+    const cities = [...citiesMap.keys()].sort((a, b) => a.localeCompare(b));
 
-    // Tapping the card itself (not the Map/Watch buttons) opens the site
-    // photo, if there is one. The account-number badge gets a green ring
-    // (via .ticket-account--has-image in CSS) as the visual cue that a
-    // photo is available — replaces the old standalone Photo button.
-    if (hasImage) {
-      li.addEventListener("click", e => {
-        if (longPressFired) { longPressFired = false; return; }
-        if (e.target.closest("a, button")) return;
-        openImage(loc);
+    for (const city of cities) {
+      const key = cityKey(state, city);
+      const cityLocs = applyFavoritesFirst(sortLocations(citiesMap.get(city), sortSelect.value));
+      const collapsed = collapsedCities.has(key);
+
+      const citySection = document.createElement("div");
+      citySection.className = "city-group";
+
+      const cityHeader = document.createElement("button");
+      cityHeader.type = "button";
+      cityHeader.className = "city-group-header" + (collapsed ? " city-group-header--collapsed" : "");
+      cityHeader.setAttribute("aria-expanded", String(!collapsed));
+      cityHeader.innerHTML = `
+        <span class="city-group-chevron">${collapsed ? "&#9656;" : "&#9662;"}</span>
+        <span class="city-group-name">${escapeHtml(city)}</span>
+        <span class="city-group-count">${cityLocs.length}</span>
+      `;
+
+      const cityList = document.createElement("ul");
+      cityList.className = "ticket-list city-group-list";
+      cityList.hidden = collapsed;
+      cityLocs.forEach(loc => cityList.appendChild(buildTicketLi(loc)));
+
+      cityHeader.addEventListener("click", () => {
+        const nowCollapsed = !cityList.hidden;
+        cityList.hidden = nowCollapsed;
+        cityHeader.classList.toggle("city-group-header--collapsed", nowCollapsed);
+        cityHeader.setAttribute("aria-expanded", String(!nowCollapsed));
+        cityHeader.querySelector(".city-group-chevron").innerHTML = nowCollapsed ? "&#9656;" : "&#9662;";
+        if (nowCollapsed) collapsedCities.add(key);
+        else collapsedCities.delete(key);
+        saveCollapsedCities(collapsedCities);
       });
+
+      citySection.appendChild(cityHeader);
+      citySection.appendChild(cityList);
+      stateSection.appendChild(citySection);
     }
-    if (hasVideo) {
-      li.querySelector(".ticket-btn-watch").addEventListener("click", () => openVideo(loc));
-    }
 
-    // ── Long-press to favorite / unfavorite ─────────────────────────────
-    // Hold ~550ms without moving to toggle. Suppresses the trailing click
-    // (longPressFired) so a favorite-toggle never also opens the photo.
-    const LONG_PRESS_MS = 550;
-    const MOVE_CANCEL_PX = 10;
-    let pressTimer = null;
-    let longPressFired = false;
-    let startX = 0;
-    let startY = 0;
+    frag.appendChild(stateSection);
+  }
 
-    const cancelPress = () => {
-      if (pressTimer) {
-        clearTimeout(pressTimer);
-        pressTimer = null;
-      }
-    };
-
-    li.addEventListener("pointerdown", e => {
-      if (e.target.closest("a, button")) return;
-      longPressFired = false;
-      startX = e.clientX;
-      startY = e.clientY;
-      pressTimer = setTimeout(() => {
-        longPressFired = true;
-        toggleFavorite(loc.id);
-      }, LONG_PRESS_MS);
-    });
-    li.addEventListener("pointermove", e => {
-      if (Math.abs(e.clientX - startX) > MOVE_CANCEL_PX || Math.abs(e.clientY - startY) > MOVE_CANCEL_PX) {
-        cancelPress();
-      }
-    });
-    li.addEventListener("pointerup", cancelPress);
-    li.addEventListener("pointercancel", cancelPress);
-    li.addEventListener("pointerleave", cancelPress);
-
-    frag.appendChild(li);
-  });
   resultsEl.appendChild(frag);
 }
 
@@ -484,21 +407,11 @@ function escapeAttr(str) { return escapeHtml(str); }
 // Account-number-only search. Name/address/city/state/zip are intentionally
 // excluded — drivers were matching on the wrong stop by typing a street name
 // or business name that happened to match a different account. Account
-// number is the one field that isn't ambiguous.
-// Applies the saved Custom city filter to the browsing list (empty search
-// box only). Falls back to everything if Custom mode is on but nothing's
-// been saved yet, per how this is meant to behave until a filter exists.
-function applyCustomCityFilter(locations) {
-  if (viewMode !== "custom" || savedCities.size === 0) return locations;
-  return locations.filter(loc => savedCities.has(cityKey(loc.state, loc.city)));
-}
-
+// number is the one field that isn't ambiguous. Always searches every stop,
+// regardless of which state/city groups are collapsed while browsing.
 function filterLocations(query) {
   const q = query.trim().toLowerCase();
-  // A typed search always searches every stop by account number, regardless
-  // of Custom mode or which cities are saved — the custom filter only
-  // narrows what's shown while browsing with an empty search box.
-  if (!q) return applyCustomCityFilter(allLocations);
+  if (!q) return allLocations;
   return allLocations.filter(loc => {
     const accountNumber = String(loc.accountNumber || "").toLowerCase();
     return accountNumber.includes(q);
@@ -520,28 +433,14 @@ function compareAccountNumber(a, b) {
   return compareText(a, b);
 }
 
+// State/city ordering is now structural (the browsing tree is always
+// State → City, alphabetical) rather than a sort choice, so this only ever
+// needs to order locations within a single flat list or a single city group.
 function sortLocations(list, sortBy) {
   const sorted = list.slice();
   switch (sortBy) {
     case "account":
       sorted.sort((a, b) => compareAccountNumber(a.accountNumber, b.accountNumber));
-      break;
-    case "city":
-      sorted.sort((a, b) => compareText(a.city, b.city) || compareText(a.name, b.name));
-      break;
-    case "state_city_name":
-      sorted.sort((a, b) =>
-        compareText(a.state, b.state) ||
-        compareText(a.city, b.city) ||
-        compareText(a.name, b.name)
-      );
-      break;
-    case "state_city_account":
-      sorted.sort((a, b) =>
-        compareText(a.state, b.state) ||
-        compareText(a.city, b.city) ||
-        compareAccountNumber(a.accountNumber, b.accountNumber)
-      );
       break;
     case "name":
     default:
@@ -563,20 +462,37 @@ function applyFavoritesFirst(list) {
 
 function applySearch() {
   const query = searchInput.value.trim();
-  const filtered = filterLocations(searchInput.value);
-  const sorted = applyFavoritesFirst(sortLocations(filtered, sortSelect.value));
-  render(sorted);
+
+  if (allLocations.length === 0) {
+    resultsEl.innerHTML = "";
+    emptyTitle.textContent = "No current locations listed.";
+    emptySub.textContent = "The directory is being updated, check back soon.";
+    emptyState.hidden = false;
+    statusLine.textContent = "";
+    return;
+  }
 
   if (query) {
+    // Searching always flattens to a plain match list, by account number
+    // only, regardless of which state/city groups are collapsed.
+    const filtered = filterLocations(searchInput.value);
+    const sorted = applyFavoritesFirst(sortLocations(filtered, sortSelect.value));
+    if (sorted.length === 0) {
+      resultsEl.innerHTML = "";
+      emptyTitle.textContent = "No match on the board.";
+      emptySub.textContent = "Search is by account number only.";
+      emptyState.hidden = false;
+    } else {
+      emptyState.hidden = true;
+      renderFlatList(sorted);
+    }
     statusLine.textContent = filtered.length === allLocations.length
       ? `Showing all ${allLocations.length} stops`
       : `${filtered.length} of ${allLocations.length} stops match`;
-  } else if (viewMode === "custom" && savedCities.size > 0) {
-    // Browsing with the Custom city filter actually narrowing the list —
-    // distinct wording from a search match so it doesn't read like a typed
-    // search came up short.
-    statusLine.textContent = `Showing ${filtered.length} of ${allLocations.length} stops (custom cities)`;
   } else {
+    // Browsing: always the full State → City tree.
+    emptyState.hidden = true;
+    renderGrouped(allLocations);
     statusLine.textContent = `Showing all ${allLocations.length} stops`;
   }
 }
