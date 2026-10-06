@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-02",
+  "updated": "2026-10-06",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -1701,6 +1701,97 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/p24da0vo9dqjc1gn1h7af/3739.mp4?rlkey=riso9fiyotbk51q7l04ownk0m&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "6b081a15-7cf8-4838-8a11-1d83e6b1446c",
+      "name": "Eagle Rock Auto Sales Llc",
+      "accountNumber": "380",
+      "address": "32629 State Hwy 86 Josh Vanzant",
+      "city": "Eagle Rock",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/s6l00lt507t0mpeosnpx3/380.mp4?rlkey=sjk2hd97kr1cj7fddcx2l1ozc&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "71626441-7dd1-4f6d-b45b-7d446c324c12",
+      "name": "John Stillwell -Stillwell Auto",
+      "accountNumber": "1095",
+      "address": "28668 Farm Road 1220",
+      "city": "Eagle Rock",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/nhgtc5cdiu0270ra1a955/1095.mp4?rlkey=2tmrz76niexw8mqnj8b2mfq7r&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "2e052761-0c02-4a2f-87cf-094231d4fe02",
+      "name": "K-Way Auto Repair",
+      "accountNumber": "1220",
+      "address": "503 Passion Play Rd",
+      "city": "Eureka Springs",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/1w9601j45ijgmzlworniv/1220.mp4?rlkey=0cep7qyz7lwre86ldukz4tl10&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "620a46b7-fa20-4bfb-9a99-132c56c9fe34",
+      "name": "Woods Car Care",
+      "accountNumber": "2141",
+      "address": "4 Parkwood Dr",
+      "city": "Eureka Springs",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/zbn46hb9gd1fgo2n5d3sc/2141.mp4?rlkey=jajutk0o5mt20blcuj38j5uk3&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "33c61401-e019-433b-830e-d0ed1137ef70",
+      "name": "Worley Tire",
+      "accountNumber": "4585",
+      "address": "908 W. Trimble Ave.",
+      "city": "Berryville",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/mlgvo4qz9jei6t18akzwh/4585.mp4?rlkey=h2zxpozv2mz72sab77u40jogs&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "4820b03b-47e3-4f4d-a7e4-45a26016be07",
+      "name": "Ozark Starter & Alt Ser",
+      "accountNumber": "4805",
+      "address": "Leon J Kropf 1285 County Road 702",
+      "city": "Berryville",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/puaw9n4f0rvvknjtijuuc/4805.mp4?rlkey=wssmco3ojbt1cbzd018gbvn9z&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "7b6f8520-3bac-4fe9-b4be-0b29f281ebd1",
+      "name": "Kevin's Auto Repair",
+      "accountNumber": "5841",
+      "address": "Kevin Lancaster 375 Highway 21 N",
+      "city": "Berryville",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/v20oxy67ytcowqr3jy5ue/5841.mp4?rlkey=rvyj29zeduxjzav4k1w302lrc&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
