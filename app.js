@@ -627,6 +627,41 @@ function applySearch() {
   }
 }
 
+// ── App code auto-update ─────────────────────────────────────────────────────
+// loadData only refreshes the stop list, so an already-open app keeps running
+// old code after an upload. On every load cycle (the 5-minute timer and the
+// manual refresh button) this compares the live index.html / app.js /
+// style.css against the copies captured on the first check; if any changed
+// it reloads the page so the new code takes over. The reload is held back
+// while a video or photo is open or something is typed in the search box,
+// and retried on the next cycle, so it never cuts off a driver mid-use.
+const APP_SHELL_FILES = ["index.html", "app.js", "style.css"];
+let appShellBaseline = null;
+
+async function fetchAppShellSignature() {
+  const texts = await Promise.all(APP_SHELL_FILES.map(async file => {
+    const res = await fetch(file, { cache: "no-store" });
+    if (!res.ok) throw new Error("bad response");
+    return res.text();
+  }));
+  return texts.join("\u0000");
+}
+
+async function checkForAppUpdate() {
+  try {
+    const signature = await fetchAppShellSignature();
+    if (appShellBaseline === null) {
+      appShellBaseline = signature;
+      return;
+    }
+    if (signature === appShellBaseline) return;
+    const busy = !videoModal.hidden || !imageModal.hidden || searchInput.value.trim() !== "";
+    if (!busy) location.reload();
+  } catch {
+    // Offline or fetch failed — skip, the next cycle tries again.
+  }
+}
+
 async function loadData({ forceNetwork = false } = {}) {
   stopCountText.textContent = "loading stops\u2026";
   try {
@@ -638,6 +673,7 @@ async function loadData({ forceNetwork = false } = {}) {
     stopCountText.textContent = `${allLocations.length} stops on file`;
     updatedLine.textContent = data.updated ? `Data updated ${data.updated}` : "";
     applySearch();
+    checkForAppUpdate();
   } catch (err) {
     stopCountText.textContent = "couldn't load stops";
     statusLine.textContent = "Check your connection and try refresh.";
