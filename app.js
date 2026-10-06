@@ -7,6 +7,13 @@ const DATA_URL = "data.json";
 // playing or wipe out whatever's typed in the search box.
 const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
+// Per-deployment switch for the State > City browsing tree (collapsible
+// cities + favorite cities). true  = browsing shows the grouped tree.
+// false = browsing shows one plain flat list of every stop, no grouping.
+// Set this before uploading for each customer. Drivers never see a toggle.
+// Account-number search behaves the same either way.
+const ENABLE_GROUPING = false;
+
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
@@ -390,6 +397,60 @@ function renderFlatList(list) {
 }
 
 // Grouped browsing view: State (always fully listed, alphabetical) → City
+// Builds one collapsible city header + location list. Shared by the pinned
+// Favorites section and the normal State > City tree so both read/write the
+// exact same collapsedCities entry for a given city — collapsing a city in
+// either spot collapses it everywhere that city appears.
+function buildCityBlock(state, city, locs, { includeState = false } = {}) {
+  const key = cityKey(state, city);
+  const collapsed = collapsedCities.has(key);
+  const isFavoriteCity = favoriteCities.has(key);
+  const sortedLocs = applyFavoritesFirst(sortLocations(locs, sortSelect.value));
+
+  const citySection = document.createElement("div");
+  citySection.className = "city-group";
+
+  const cityHeader = document.createElement("button");
+  cityHeader.type = "button";
+  cityHeader.className = "city-group-header" + (collapsed ? " city-group-header--collapsed" : "");
+  cityHeader.setAttribute("aria-expanded", String(!collapsed));
+  const label = includeState ? `${escapeHtml(city)}, ${escapeHtml(state)}` : escapeHtml(city);
+  cityHeader.innerHTML = `
+    <span class="city-group-chevron">${collapsed ? "&#9656;" : "&#9662;"}</span>
+    ${isFavoriteCity ? `<span class="city-group-star" aria-label="Favorited">&#9733;</span>` : ""}
+    <span class="city-group-name">${label}</span>
+    <span class="city-group-count">${sortedLocs.length}</span>
+  `;
+
+  const cityList = document.createElement("ul");
+  cityList.className = "ticket-list city-group-list";
+  cityList.hidden = collapsed;
+  sortedLocs.forEach(loc => cityList.appendChild(buildTicketLi(loc)));
+
+  wireCityLongPress(cityHeader, key);
+  cityHeader.addEventListener("click", () => {
+    // A long-press just toggled this city's favorite status — don't also
+    // collapse/expand it off the back of that same press.
+    if (cityHeader.dataset.longPressFired === "1") {
+      cityHeader.dataset.longPressFired = "";
+      return;
+    }
+    const nowCollapsed = !cityList.hidden;
+    cityList.hidden = nowCollapsed;
+    cityHeader.classList.toggle("city-group-header--collapsed", nowCollapsed);
+    cityHeader.setAttribute("aria-expanded", String(!nowCollapsed));
+    cityHeader.querySelector(".city-group-chevron").innerHTML = nowCollapsed ? "&#9656;" : "&#9662;";
+    if (nowCollapsed) collapsedCities.add(key);
+    else collapsedCities.delete(key);
+    saveCollapsedCities(collapsedCities);
+  });
+
+  citySection.appendChild(cityHeader);
+  citySection.appendChild(cityList);
+  return citySection;
+}
+
+// Grouped browsing view: State (always fully listed, alphabetical) → City
 // (alphabetical, independently collapsible) → that city's locations.
 // Assumes locations is non-empty; callers handle the empty state themselves.
 function renderGrouped(locations) {
@@ -409,14 +470,16 @@ function renderGrouped(locations) {
   const frag = document.createDocumentFragment();
 
   // ── Pinned Favorites section ───────────────────────────────────────────
-  // Favorited cities, alphabetical by city name (state as tiebreaker),
-  // always fully expanded. These also stay in their normal State > City
-  // spot further down — this is a pinned shortcut, not a move.
+  // Favorited cities, alphabetical by city name (state as tiebreaker).
+  // These also stay in their normal State > City spot further down — this
+  // is a pinned shortcut, not a move — and share the same collapse state
+  // as that normal spot (buildCityBlock keys off the same cityKey), so
+  // collapsing one collapses the other.
   const pinned = [];
   for (const state of states) {
     for (const city of byState.get(state).keys()) {
       const key = cityKey(state, city);
-      if (favoriteCities.has(key)) pinned.push({ state, city, key, locs: byState.get(state).get(city) });
+      if (favoriteCities.has(key)) pinned.push({ state, city, locs: byState.get(state).get(city) });
     }
   }
   pinned.sort((a, b) => compareText(a.city, b.city) || compareText(a.state, b.state));
@@ -431,20 +494,7 @@ function renderGrouped(locations) {
     favSection.appendChild(favHeader);
 
     for (const entry of pinned) {
-      const favCityHeader = document.createElement("div");
-      favCityHeader.className = "favorite-city-header";
-      favCityHeader.innerHTML = `
-        <span class="city-group-star">&#9733;</span>
-        <span class="city-group-name">${escapeHtml(entry.city)}, ${escapeHtml(entry.state)}</span>
-        <span class="city-group-count">${entry.locs.length}</span>
-      `;
-      wireCityLongPress(favCityHeader, entry.key);
-      favSection.appendChild(favCityHeader);
-
-      const favList = document.createElement("ul");
-      favList.className = "ticket-list";
-      applyFavoritesFirst(sortLocations(entry.locs, sortSelect.value)).forEach(loc => favList.appendChild(buildTicketLi(loc)));
-      favSection.appendChild(favList);
+      favSection.appendChild(buildCityBlock(entry.state, entry.city, entry.locs, { includeState: true }));
     }
 
     frag.appendChild(favSection);
@@ -463,51 +513,7 @@ function renderGrouped(locations) {
     const cities = [...citiesMap.keys()].sort((a, b) => a.localeCompare(b));
 
     for (const city of cities) {
-      const key = cityKey(state, city);
-      const cityLocs = applyFavoritesFirst(sortLocations(citiesMap.get(city), sortSelect.value));
-      const collapsed = collapsedCities.has(key);
-      const isFavoriteCity = favoriteCities.has(key);
-
-      const citySection = document.createElement("div");
-      citySection.className = "city-group";
-
-      const cityHeader = document.createElement("button");
-      cityHeader.type = "button";
-      cityHeader.className = "city-group-header" + (collapsed ? " city-group-header--collapsed" : "");
-      cityHeader.setAttribute("aria-expanded", String(!collapsed));
-      cityHeader.innerHTML = `
-        <span class="city-group-chevron">${collapsed ? "&#9656;" : "&#9662;"}</span>
-        ${isFavoriteCity ? `<span class="city-group-star" aria-label="Favorited">&#9733;</span>` : ""}
-        <span class="city-group-name">${escapeHtml(city)}</span>
-        <span class="city-group-count">${cityLocs.length}</span>
-      `;
-
-      const cityList = document.createElement("ul");
-      cityList.className = "ticket-list city-group-list";
-      cityList.hidden = collapsed;
-      cityLocs.forEach(loc => cityList.appendChild(buildTicketLi(loc)));
-
-      wireCityLongPress(cityHeader, key);
-      cityHeader.addEventListener("click", () => {
-        // A long-press just toggled this city's favorite status — don't
-        // also collapse/expand it off the back of that same press.
-        if (cityHeader.dataset.longPressFired === "1") {
-          cityHeader.dataset.longPressFired = "";
-          return;
-        }
-        const nowCollapsed = !cityList.hidden;
-        cityList.hidden = nowCollapsed;
-        cityHeader.classList.toggle("city-group-header--collapsed", nowCollapsed);
-        cityHeader.setAttribute("aria-expanded", String(!nowCollapsed));
-        cityHeader.querySelector(".city-group-chevron").innerHTML = nowCollapsed ? "&#9656;" : "&#9662;";
-        if (nowCollapsed) collapsedCities.add(key);
-        else collapsedCities.delete(key);
-        saveCollapsedCities(collapsedCities);
-      });
-
-      citySection.appendChild(cityHeader);
-      citySection.appendChild(cityList);
-      stateSection.appendChild(citySection);
+      stateSection.appendChild(buildCityBlock(state, city, citiesMap.get(city)));
     }
 
     frag.appendChild(stateSection);
@@ -609,9 +615,14 @@ function applySearch() {
       ? `Showing all ${allLocations.length} stops`
       : `${filtered.length} of ${allLocations.length} stops match`;
   } else {
-    // Browsing: always the full State → City tree.
+    // Browsing: the State → City tree when ENABLE_GROUPING is on, otherwise
+    // one plain flat list of every stop.
     emptyState.hidden = true;
-    renderGrouped(allLocations);
+    if (ENABLE_GROUPING) {
+      renderGrouped(allLocations);
+    } else {
+      renderFlatList(applyFavoritesFirst(sortLocations(allLocations, sortSelect.value)));
+    }
     statusLine.textContent = `Showing all ${allLocations.length} stops`;
   }
 }
