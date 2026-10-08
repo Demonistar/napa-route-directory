@@ -432,14 +432,14 @@
     },
     {
       "id": "64adb067-78b7-4a0a-998b-ae73dc495c1f",
-      "name": "Mclarty-Daniel Nissan",
-      "accountNumber": "2677",
+      "name": "Mclarty Daniel Nissan - New",
+      "accountNumber": "2677 N",
       "address": "2501 Moberly Ln",
       "city": "Bentonville",
       "state": "AR",
       "zip": "",
       "notes": "",
-      "videoUrl": "https://www.dropbox.com/scl/fi/jwacmoxp0r6zztvu0e7fb/2677.mp4?rlkey=akkqdnp53yt9hlg95xohrgcah&dl=0",
+      "videoUrl": "https://www.dropbox.com/scl/fi/mtmbrl9qw1mzq2feg1dy3/2677n.mp4?rlkey=htk1z3l5jlzvmieo34on85n0j&st=4f8i6orv&dl=0",
       "imageUrl": null,
       "imageUrls": []
     },
@@ -1831,6 +1831,19 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/lvycjvh2vp0ttew9mlhj9/3938n.mp4?rlkey=571r8x9i3sqqjxeqmfht7to13&st=q0fo9cxa&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "ce2a7620-e0e8-4ab3-b0c2-891ba0799d93",
+      "name": "Mclarty Daniel Nissan - Used",
+      "accountNumber": "2677 U",
+      "address": "2501 Moberly Ln",
+      "city": "Bentonville",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/le4ucvbxhj98kx36sbhu2/2677u.mp4?rlkey=2lsto4pi5e1uxgmmy7eejnvdh&st=9zwpdn5w&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
