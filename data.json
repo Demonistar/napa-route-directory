@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-06",
+  "updated": "2026-10-08",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -1805,6 +1805,19 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/dkji9q59muvzyhumlp3un/4017.mp4?rlkey=296kj8luen6pw75cerc6arfcp&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "e48f2d5f-b0a9-4ab0-843f-5fb28755c89a",
+      "name": "Superior Automotive Group - Recon Center",
+      "accountNumber": "1420",
+      "address": "304 S Lincoln St.",
+      "city": "Lowell",
+      "state": "AR",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/bunsphjj2eb53va6511wa/1420.mp4?rlkey=p62mg05fserg92l89ghw4mp0a&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
