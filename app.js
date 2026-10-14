@@ -26,7 +26,8 @@ const STORE_LOGINS = [
   { login: "3", store: "Bentonville",    password: "1233" },
   { login: "4", store: "Eureka Springs", password: "1234" },
   { login: "5", store: "Cassville",      password: "1235" },
-  { login: "6", store: "Monett",         password: "1236" }
+  { login: "6", store: "Monett",         password: "1236" },
+  { login: "7", store: "Mt. Vernon",     password: "1237" }
 ];
 
 const resultsEl = document.getElementById("results");
