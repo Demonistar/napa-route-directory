@@ -1,7 +1,7 @@
 const DATA_URL = "data.json";
 
-// Drivers don't reliably think to hit the manual refresh button, so pull a
-// fresh copy of data.json on a timer too. Re-uses loadData's existing
+// There's no manual refresh button anymore (that top-bar spot is the Upload
+// button now), so data.json is pulled fresh on a timer. Re-uses loadData's
 // forceNetwork path (bypasses cache, re-renders the results list) rather
 // than reloading the whole page, so it can't interrupt a video that's
 // playing or wipe out whatever's typed in the search box.
@@ -14,6 +14,21 @@ const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 // Account-number search behaves the same either way.
 const ENABLE_GROUPING = false;
 
+// Upload button → store-manager login → Google Form. A correct login opens the
+// form. This is a TEMPORARY client-side gate: the table below is readable in
+// this file, so it only keeps casual/non-manager drivers out, not a real
+// secret. The form itself also requires a Google sign-in. When this moves to
+// the owned server, login validation moves server-side.
+const FORM_URL = "https://forms.gle/NVHZMVsx6urH4w2ZA";
+const STORE_LOGINS = [
+  { login: "1", store: "Springdale",     password: "1231" },
+  { login: "2", store: "Rogers",         password: "1232" },
+  { login: "3", store: "Bentonville",    password: "1233" },
+  { login: "4", store: "Eureka Springs", password: "1234" },
+  { login: "5", store: "Cassville",      password: "1235" },
+  { login: "6", store: "Monett",         password: "1236" }
+];
+
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
@@ -25,7 +40,13 @@ const emptyTitle = document.getElementById("emptyTitle");
 const emptySub = document.getElementById("emptySub");
 const updatedLine = document.getElementById("updatedLine");
 const offlineTag = document.getElementById("offlineTag");
-const refreshBtn = document.getElementById("refreshBtn");
+const uploadBtn = document.getElementById("uploadBtn");
+const loginModal = document.getElementById("loginModal");
+const loginForm = document.getElementById("loginForm");
+const loginStore = document.getElementById("loginStore");
+const loginPass = document.getElementById("loginPass");
+const loginError = document.getElementById("loginError");
+const loginModalClose = document.getElementById("loginModalClose");
 const videoModal = document.getElementById("videoModal");
 const videoPlayer = document.getElementById("videoPlayer");
 const videoModalTitle = document.getElementById("videoModalTitle");
@@ -304,6 +325,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if (!videoModal.hidden) closeVideo();
     if (!imageModal.hidden) closeImage();
+    if (!loginModal.hidden) closeLogin();
   }
 });
 
@@ -629,8 +651,8 @@ function applySearch() {
 
 // ── App code auto-update ─────────────────────────────────────────────────────
 // loadData only refreshes the stop list, so an already-open app keeps running
-// old code after an upload. On every load cycle (the 5-minute timer and the
-// manual refresh button) this compares the live index.html / app.js /
+// old code after a deploy. On every load cycle (the 5-minute timer) this
+// compares the live index.html / app.js /
 // style.css against the copies captured on the first check; if any changed
 // it reloads the page so the new code takes over. The reload is held back
 // while a video or photo is open or something is typed in the search box,
@@ -676,13 +698,12 @@ async function loadData({ forceNetwork = false } = {}) {
     checkForAppUpdate();
   } catch (err) {
     stopCountText.textContent = "couldn't load stops";
-    statusLine.textContent = "Check your connection and try refresh.";
+    statusLine.textContent = "Check your connection; it'll retry automatically.";
   } finally {
     // Every completed load (success or failure) reschedules the next
-    // auto-refresh AUTO_REFRESH_MS from now \u2014 this covers the initial load,
-    // the timer firing, and a manual refresh-button press all the same way,
-    // so pressing refresh also resets the countdown instead of leaving a
-    // stale one running alongside a fresh timer.
+    // auto-refresh AUTO_REFRESH_MS from now. This covers the initial load and
+    // the timer firing the same way, so the countdown always resets to a
+    // fresh full interval instead of leaving a stale one running.
     scheduleNextRefresh();
   }
 }
@@ -713,7 +734,47 @@ setInterval(tickCountdown, 1000);
 
 searchInput.addEventListener("input", applySearch);
 sortSelect.addEventListener("change", applySearch);
-refreshBtn.addEventListener("click", () => loadData({ forceNetwork: true }));
+
+// ── Upload button → store-manager login → Google Form ───────────────────────
+function openLogin() {
+  loginError.hidden = true;
+  loginStore.value = "";
+  loginPass.value = "";
+  loginModal.hidden = false;
+  document.body.style.overflow = "hidden";
+  loginStore.focus();
+}
+
+function closeLogin() {
+  loginModal.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function openSubmissionForm() {
+  // Called from the login form's submit, which is a user gesture, so the new
+  // tab is allowed. Fall back to navigating in place if the browser blocks it.
+  const win = window.open(FORM_URL, "_blank", "noopener");
+  if (!win) location.href = FORM_URL;
+}
+
+uploadBtn.addEventListener("click", openLogin);
+loginModalClose.addEventListener("click", closeLogin);
+loginModal.addEventListener("click", e => {
+  if (e.target === loginModal) closeLogin();
+});
+loginForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const id = loginStore.value.trim();
+  const pass = loginPass.value.trim();
+  const match = STORE_LOGINS.find(s => s.login === id && s.password === pass);
+  if (!match) {
+    loginError.textContent = "That login and password did not match. Please try again.";
+    loginError.hidden = false;
+    return;
+  }
+  closeLogin();
+  openSubmissionForm();
+});
 
 function updateOfflineTag() {
   offlineTag.hidden = navigator.onLine;

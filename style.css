@@ -80,24 +80,25 @@ body{
   opacity:0.75;
 }
 
-.refresh-btn{
-  background:transparent;
-  border:2px solid rgba(255,255,255,0.35);
-  color:var(--paper);
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  font-size:18px;
-  line-height:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:transform 0.4s ease, border-color 0.2s ease;
+.upload-btn{
+  background:var(--yellow);
+  color:var(--navy-deep);
+  border:none;
+  font-family:var(--sans);
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:0.02em;
+  padding:9px 16px;
+  border-radius:999px;
+  white-space:nowrap;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:transform 0.15s ease, filter 0.2s ease;
 }
 
-.refresh-btn:active{
-  transform:rotate(180deg);
-  border-color:var(--yellow);
+.upload-btn:active{
+  transform:scale(0.96);
+  filter:brightness(0.95);
 }
 
 /* ---------- Main / search ---------- */
@@ -392,6 +393,110 @@ main{
   cursor:zoom-out;
 }
 
+/* ---------- Store-manager login modal (Upload button) ---------- */
+.login-modal{
+  position:fixed;
+  inset:0;
+  z-index:110;
+  background:rgba(7,26,51,0.92);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+
+.login-modal[hidden]{
+  display:none;
+}
+
+.login-modal-inner{
+  width:100%;
+  max-width:380px;
+  background:var(--paper);
+  border-radius:12px;
+  overflow:hidden;
+  border-top:5px solid var(--yellow);
+}
+
+.login-modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 14px;
+  background:var(--navy);
+}
+
+.login-modal-title{
+  color:#fff;
+  font-weight:800;
+  font-size:15px;
+}
+
+.login-form{
+  padding:16px 16px 18px;
+}
+
+.login-lede{
+  margin:0 0 14px;
+  font-size:13px;
+  color:var(--ink-soft);
+  line-height:1.45;
+}
+
+.login-field{
+  display:block;
+  margin-bottom:12px;
+}
+
+.login-label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:5px;
+}
+
+.login-field input{
+  width:100%;
+  padding:12px 14px;
+  font-size:16px;
+  font-family:var(--sans);
+  border:2px solid var(--navy);
+  border-radius:8px;
+  background:#fff;
+  color:var(--ink);
+}
+
+.login-field input:focus{
+  outline:3px solid var(--yellow);
+  outline-offset:1px;
+}
+
+.login-error{
+  margin:0 0 12px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--red);
+}
+
+.login-submit{
+  width:100%;
+  padding:13px;
+  font-size:15px;
+  font-weight:800;
+  font-family:var(--sans);
+  border:none;
+  border-radius:8px;
+  background:var(--yellow);
+  color:var(--navy-deep);
+  cursor:pointer;
+}
+
+.login-submit:active{
+  transform:scale(0.98);
+}
+
 /* ---------- State / City browsing tree ---------- */
 .state-group + .state-group{
   margin-top:18px;
@@ -578,5 +683,5 @@ main{
 }
 
 @media (prefers-reduced-motion: reduce){
-  .refresh-btn{ transition:none; }
+  .upload-btn{ transition:none; }
 }
