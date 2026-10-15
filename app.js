@@ -21,13 +21,13 @@ const ENABLE_GROUPING = false;
 // the owned server, login validation moves server-side.
 const FORM_URL = "https://forms.gle/NVHZMVsx6urH4w2ZA";
 const STORE_LOGINS = [
-  { login: "1", store: "Springdale",     password: "1231" },
-  { login: "2", store: "Rogers",         password: "1232" },
-  { login: "3", store: "Bentonville",    password: "1233" },
-  { login: "4", store: "Eureka Springs", password: "1234" },
-  { login: "5", store: "Cassville",      password: "1235" },
-  { login: "6", store: "Monett",         password: "1236" },
-  { login: "7", store: "Mt. Vernon",     password: "1237" }
+  { login: "403", store: "Springdale",     password: "4031" },
+  { login: "402", store: "Rogers",         password: "4022" },
+  { login: "401", store: "Bentonville",    password: "4013" },
+  { login: "405", store: "Eureka Springs", password: "4054" },
+  { login: "411", store: "Cassville",      password: "4115" },
+  { login: "412", store: "Monett",         password: "4126" },
+  { login: "413", store: "Mt. Vernon",     password: "4137" }
 ];
 
 const resultsEl = document.getElementById("results");
