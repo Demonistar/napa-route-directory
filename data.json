@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18",
+  "updated": "2026-10-19",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -1849,7 +1849,7 @@
     },
     {
       "id": "6a6b5e14-c51c-4c7e-ac2f-cd8b69b25ee9",
-      "name": "GARLAND, JOE",
+      "name": "Garland, Joe",
       "accountNumber": "741",
       "address": "19546 ST. HVVY 86",
       "city": "Cassville",
@@ -1875,7 +1875,7 @@
     },
     {
       "id": "ddda3eb5-c5e9-4914-8088-c5ea2032c551",
-      "name": "TORQUED- JERRY SMITH",
+      "name": "Torqued - Jerry Smith",
       "accountNumber": "1329",
       "address": "12376 STATE HWY 76",
       "city": "Cassville",
@@ -1992,7 +1992,7 @@
     },
     {
       "id": "00d40422-7104-46bb-8533-2b306cff4792",
-      "name": "GEORGE'S INC - Cassville",
+      "name": "George's INC",
       "accountNumber": "80700",
       "address": "9066 State Highway W",
       "city": "Cassville",
@@ -2031,7 +2031,7 @@
     },
     {
       "id": "c2cefebf-d9cb-4344-aca0-b7191ff2e95f",
-      "name": "CASSVILLE SCHOOLS",
+      "name": "Cassville Schools Bus Depot",
       "accountNumber": "88440",
       "address": "1501 MAIN ST.",
       "city": "Cassville",
