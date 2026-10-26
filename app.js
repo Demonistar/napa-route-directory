@@ -14,21 +14,9 @@ const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 // Account-number search behaves the same either way.
 const ENABLE_GROUPING = false;
 
-// Upload button → store-manager login → Google Form. A correct login opens the
-// form. This is a TEMPORARY client-side gate: the table below is readable in
-// this file, so it only keeps casual/non-manager drivers out, not a real
-// secret. The form itself also requires a Google sign-in. When this moves to
-// the owned server, login validation moves server-side.
+// Upload button → opens the Google Form directly. There is no login or
+// password gate. The form itself still requires a Google sign-in.
 const FORM_URL = "https://forms.gle/NVHZMVsx6urH4w2ZA";
-const STORE_LOGINS = [
-  { login: "403", store: "Springdale",     password: "4031" },
-  { login: "402", store: "Rogers",         password: "4022" },
-  { login: "401", store: "Bentonville",    password: "4013" },
-  { login: "405", store: "Eureka Springs", password: "4054" },
-  { login: "411", store: "Cassville",      password: "4115" },
-  { login: "412", store: "Monett",         password: "4126" },
-  { login: "413", store: "Mt. Vernon",     password: "4137" }
-];
 
 const resultsEl = document.getElementById("results");
 const searchInput = document.getElementById("searchInput");
@@ -42,12 +30,6 @@ const emptySub = document.getElementById("emptySub");
 const updatedLine = document.getElementById("updatedLine");
 const offlineTag = document.getElementById("offlineTag");
 const uploadBtn = document.getElementById("uploadBtn");
-const loginModal = document.getElementById("loginModal");
-const loginForm = document.getElementById("loginForm");
-const loginStore = document.getElementById("loginStore");
-const loginPass = document.getElementById("loginPass");
-const loginError = document.getElementById("loginError");
-const loginModalClose = document.getElementById("loginModalClose");
 const videoModal = document.getElementById("videoModal");
 const videoPlayer = document.getElementById("videoPlayer");
 const videoModalTitle = document.getElementById("videoModalTitle");
@@ -326,7 +308,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if (!videoModal.hidden) closeVideo();
     if (!imageModal.hidden) closeImage();
-    if (!loginModal.hidden) closeLogin();
   }
 });
 
@@ -736,46 +717,15 @@ setInterval(tickCountdown, 1000);
 searchInput.addEventListener("input", applySearch);
 sortSelect.addEventListener("change", applySearch);
 
-// ── Upload button → store-manager login → Google Form ───────────────────────
-function openLogin() {
-  loginError.hidden = true;
-  loginStore.value = "";
-  loginPass.value = "";
-  loginModal.hidden = false;
-  document.body.style.overflow = "hidden";
-  loginStore.focus();
-}
-
-function closeLogin() {
-  loginModal.hidden = true;
-  document.body.style.overflow = "";
-}
-
+// ── Upload button → Google Form ─────────────────────────────────────────────
 function openSubmissionForm() {
-  // Called from the login form's submit, which is a user gesture, so the new
-  // tab is allowed. Fall back to navigating in place if the browser blocks it.
+  // Called from the button's click, which is a user gesture, so the new tab is
+  // allowed. Fall back to navigating in place if the browser blocks it.
   const win = window.open(FORM_URL, "_blank", "noopener");
   if (!win) location.href = FORM_URL;
 }
 
-uploadBtn.addEventListener("click", openLogin);
-loginModalClose.addEventListener("click", closeLogin);
-loginModal.addEventListener("click", e => {
-  if (e.target === loginModal) closeLogin();
-});
-loginForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const id = loginStore.value.trim();
-  const pass = loginPass.value.trim();
-  const match = STORE_LOGINS.find(s => s.login === id && s.password === pass);
-  if (!match) {
-    loginError.textContent = "That login and password did not match. Please try again.";
-    loginError.hidden = false;
-    return;
-  }
-  closeLogin();
-  openSubmissionForm();
-});
+uploadBtn.addEventListener("click", openSubmissionForm);
 
 function updateOfflineTag() {
   offlineTag.hidden = navigator.onLine;
