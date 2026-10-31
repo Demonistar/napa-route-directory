@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-31",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -2039,6 +2039,84 @@
       "zip": "",
       "notes": "",
       "videoUrl": "https://www.dropbox.com/scl/fi/n3vtwzqikde0k37fidikw/88440.mp4?rlkey=nfz9ffyr2or8feru01uhid7d2&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "ea5dc39b-496a-47f8-8dd6-949dfaa5e740",
+      "name": "Don\ufffds Diesel & Auto",
+      "accountNumber": "5332",
+      "address": "100 Dairy St",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/gmt3if415ifwarpserpze/5332.mp4?rlkey=3z4pvnxkudtm1bvb9nkd611l0&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "d3fa33cb-8129-4ac5-89b7-b335d82ac1d9",
+      "name": "Elmo's Garage",
+      "accountNumber": "2353",
+      "address": "1111 E Bond St",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/new3fm5mk83q2fuokcnec/2353.mp4?rlkey=1i3u169orwasfw8q3z5rgbb9j&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "cf76ac4a-b580-4712-aaf3-05dfaf7786fc",
+      "name": "Anderson Automotive",
+      "accountNumber": "81000",
+      "address": "609 14th St",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/89nk41xuxvqajki3u2q3y/81000.mp4?rlkey=6tu1b2zkg3omc6yn8phc1dj1t&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "c7307d1a-bfb5-400c-86d2-9831c0b0926a",
+      "name": "Thomas Towing",
+      "accountNumber": "3223",
+      "address": "101 Dairy St",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/svah504nbqsmdb3xolnjt/3223.mp4?rlkey=48gl3efywuastydngei9t9ld5&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "47bd5155-a967-4950-a438-51ed1843f16f",
+      "name": "Certified Automotive",
+      "accountNumber": "9950",
+      "address": "1301 Wellington Ave",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/pkitk5undm628w4rxec06/9950.mp4?rlkey=ocnv0s32ldrja9uytecvkcm02&dl=0",
+      "imageUrl": null,
+      "imageUrls": []
+    },
+    {
+      "id": "68d09901-128b-4c7a-827e-579553f6463f",
+      "name": "Friendly Tire",
+      "accountNumber": "6777",
+      "address": "703 US-60 W",
+      "city": "Monett",
+      "state": "MO",
+      "zip": "",
+      "notes": "",
+      "videoUrl": "https://www.dropbox.com/scl/fi/3nf8e9qi32ytuhi4h7tfo/6777.mp4?rlkey=0ikamn78ixn84qyferjnsc1p3&dl=0",
       "imageUrl": null,
       "imageUrls": []
     }
