@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06",
+  "updated": "2026-11-10",
   "locations": [
     {
       "id": "7f8f09d5-7d55-429a-bf89-c590840354d6",
@@ -1200,7 +1200,7 @@
     {
       "id": "ee3ac0c8-af81-4d6e-a3f0-cc86e6bdc95f",
       "name": "Mclarty Daniel Ford - Used",
-      "accountNumber": "3938 U",
+      "accountNumber": "3939",
       "address": "2609 S Walton Blvd",
       "city": "Bentonville",
       "state": "AR",
@@ -1824,7 +1824,7 @@
     {
       "id": "e6f4ca51-444c-4477-919e-ccf8d2b30bda",
       "name": "Mclarty Daniel Ford - New",
-      "accountNumber": "3938 N",
+      "accountNumber": "3938",
       "address": "2609 S Walton Blvd",
       "city": "Bentonville",
       "state": "AR",
